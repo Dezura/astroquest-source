@@ -20,11 +20,13 @@ public class CustomizableGun : Utils
     public float firerate = 20f;
     public float projectileSize = 1f;
     public float multishot = 1f;
-    public float projectileSpeed = 60;
+    public float projectileSpeed = 60f;
+    public float projectileLifespan = 1f;
 
     public bool canShoot = true;
     
-    private IEnumerator FirerateRefresh() {
+    private IEnumerator FirerateRefresh()
+    {
         yield return new WaitForSeconds(10f/firerate);
         canShoot = true;
     }
@@ -42,7 +44,7 @@ public class CustomizableGun : Utils
 
         foreach (Transform bulletSpawn in shootPoints)
         {
-            var projectile = Instantiate(projectileType, bulletSpawn.position, bulletSpawn.rotation);
+            var projectile = Instantiate(projectileType, bulletSpawn.position, bulletSpawn.rotation).GetComponent<BasicBullet>();
 
             projectile.transform.SetParent(g.projectileSpawns);
 
@@ -51,8 +53,10 @@ public class CustomizableGun : Utils
             projectile.transform.localScale = newScale;
 
             projectile.transform.localPosition -= projectile.transform.rotation * new Vector3(0, projectile.GetComponent<CapsuleCollider>().height * projectile.transform.localScale.y / 2f, 0);
-
-            projectile.GetComponent<Rigidbody>().velocity = bulletSpawn.TransformDirection(Vector3.up * projectileSpeed);
+            
+            projectile.damage = damage;
+            projectile.speed = projectileSpeed;
+            projectile.lifespan = projectileLifespan;
         }
         canShoot = false;
         StartCoroutine("FirerateRefresh");

@@ -33,7 +33,8 @@ public class CustomizableGunEditor : Editor
                     "damage",
                     "firerate",
                     "projectileSize",
-                    "projectileSpeed"
+                    "projectileSpeed",
+                    "projectileLifespan"
                 };
                 
                 break;
@@ -45,6 +46,7 @@ public class CustomizableGunEditor : Editor
                     "firerate",
                     "projectileSize",
                     "projectileSpeed",
+                    "projectileLifespan",
                     "multishot"
                 };
 
