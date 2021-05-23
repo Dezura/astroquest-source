@@ -26,10 +26,20 @@ public class ShipMovement : Utils
         {"current", 0f}
     };
 
+    public GameObject thrusterRoot;
+    public Dictionary<string, float> thrustersSpeed = new Dictionary<string, float>
+    {
+        {"max", 100f},
+        {"lerpSpeed", 7.5f},
+        {"current", 0f}
+    };
+
     // Yes, I'm using a 4D vector lol
     // The W axis here will be used to store the roll rotation values
     // Is it unnecessary? Yeah for the most part, but atleast now I can say "Oh I've written code with 4D vectors!" or something
     Vector4 inputVector = Vector4.zero;
+
+    Vector3 clampedMoveDir;
 
     void Start()
     {
@@ -70,30 +80,50 @@ public class ShipMovement : Utils
                 break;
             }
         }
-        
-        // TODO: Normalize x y and z here
+
+        clampedMoveDir = Vector3.ClampMagnitude(inputVector, 1);
     }
 
     public void HandleMovement()
     {
         // Applies basic movement force for x and y, that force then rotated by it's own rotation
-        main.rigidBody.AddForce(transform.rotation * (new Vector3(inputVector.x, inputVector.y, 0) * moveSpeed * 100f));
+        main.rigidBody.AddForce(transform.rotation * (new Vector3(clampedMoveDir.x, clampedMoveDir.y, 0) * moveSpeed * 100f));
 
         // Applies special force to z
         // If moving forward, it rotates velocity by the model rotation instead of it's own rotation
-        if (inputVector.z > 0) {
-            main.rigidBody.AddForce(main.modelTransform.rotation * (new Vector3(0, 0, inputVector.z) * moveSpeed * 150f));
+        if (clampedMoveDir.z > 0) {
+            main.rigidBody.AddForce(main.modelTransform.rotation * (new Vector3(0, 0, clampedMoveDir.z) * moveSpeed * 150f));
         }
         // Else if moving backwards, it rotates by it's own rotation
         else {
-            main.rigidBody.AddForce(transform.rotation * (new Vector3(0, 0, inputVector.z) * moveSpeed * 100f));
+            main.rigidBody.AddForce(transform.rotation * (new Vector3(0, 0, clampedMoveDir.z) * moveSpeed * 100f));
         }
 
         // Handles rolling and stuff with the w axis of inputVector
         main.rigidBody.AddTorque(main.modelTransform.rotation * new Vector3(0, 0, -inputVector.w * rollAmount * 10f));
 
         // Applies rotation force to model based on x movement
-        moveModelTorque["current"] = Mathf.Lerp(moveModelTorque["current"], -Mathf.Clamp(inputVector.x + inputVector.w, -1, 1) * moveModelTorque["max"], moveModelTorque["lerpSpeed"] * Time.fixedDeltaTime);
+        moveModelTorque["current"] = Mathf.Lerp(moveModelTorque["current"], -Mathf.Clamp(clampedMoveDir.x + inputVector.w, -1, 1) * moveModelTorque["max"], moveModelTorque["lerpSpeed"] * Time.fixedDeltaTime);
         main.shipLook.AddModelTorque("Movement", new Vector3(0, 0, moveModelTorque["current"]));
+    }
+
+    public void UpdateThrusterSpeeds()
+    {
+        float thrusterMaxMulti = clampedMoveDir.z + Vector2.ClampMagnitude(g.virtualMouse.vMouseOffset, 1).magnitude * 1.25f;
+
+        if (thrusterMaxMulti <= 0.4f) thrusterMaxMulti = 0;
+
+        thrustersSpeed["current"] = Mathf.Lerp(thrustersSpeed["current"], thrustersSpeed["max"] * thrusterMaxMulti, thrustersSpeed["lerpSpeed"]);
+        foreach (ParticleSystem thruster in thrusterRoot.GetComponentsInChildren<ParticleSystem>())
+        {
+            // I have to store these objects first before I can set variables on them, not sure why
+            ParticleSystem.EmissionModule particleEmission = thruster.emission;
+            ParticleSystem.MainModule particleMain = thruster.main;
+            
+            
+            
+            particleEmission.rateOverTime = thrustersSpeed["current"];
+            particleMain.startLifetime = thrustersSpeed["current"]/300f;
+        }
     }
 }

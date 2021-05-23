@@ -40,5 +40,4 @@ public class Utils : MonoBehaviour
         return false;
     }
 
-
 }

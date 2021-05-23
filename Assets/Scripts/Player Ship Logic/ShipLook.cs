@@ -46,7 +46,8 @@ public class ShipLook : Utils
 
     public void HandleMainRotation()
     {
-        transform.Rotate(new Vector3(-(lookRotationAmount.y/10f * vm.vMouseOffset.y) * Time.fixedDeltaTime * 150f, lookRotationAmount.x/10f * vm.vMouseOffset.x * Time.fixedDeltaTime * 150f, 0), Space.Self);
+        Vector2 normalizedRotateVector = Vector2.ClampMagnitude(new Vector2(-vm.vMouseOffset.y, vm.vMouseOffset.x), 1) * lookRotationAmount * Time.fixedDeltaTime * 15;
+        transform.Rotate(new Vector3(normalizedRotateVector.x, normalizedRotateVector.y, 0), Space.Self);
     }
 
     public void ApplyModelRotations()

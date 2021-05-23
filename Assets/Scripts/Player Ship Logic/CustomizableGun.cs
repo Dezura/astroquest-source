@@ -57,6 +57,7 @@ public class CustomizableGun : Utils
             projectile.damage = damage;
             projectile.speed = projectileSpeed;
             projectile.lifespan = projectileLifespan;
+            projectile.sizeMultiplier = projectileSize;
         }
         canShoot = false;
         StartCoroutine("FirerateRefresh");

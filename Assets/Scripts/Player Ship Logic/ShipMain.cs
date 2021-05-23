@@ -44,6 +44,7 @@ public class ShipMain : Utils
         shipLook.HandleMainRotation();
 
         shipLook.ApplyModelRotations();
+        shipMovement.UpdateThrusterSpeeds();
 
         shipLook.HandleAimGunsRotations();
     }
