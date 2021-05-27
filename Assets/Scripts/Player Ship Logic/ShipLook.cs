@@ -80,8 +80,7 @@ public class ShipLook : Utils
     {
         Ray screenRay = main.cam.ScreenPointToRay(g.virtualMouse.vMousePosition);
         RaycastHit hit;
-
-        if (Physics.Raycast(screenRay.origin, screenRay.direction, out hit, aimMaxDistance, LayerMask.NameToLayer("Player Bullet") ) && ((Quaternion.Inverse(main.cam.transform.rotation) * (hit.point - main.cam.transform.position)).z > aimZCutoff)) {
+        if (Physics.Raycast(screenRay.origin, screenRay.direction, out hit, aimMaxDistance, g.layerMasks["Player Bullet"]) && ((Quaternion.Inverse(main.cam.transform.rotation) * (hit.point - main.cam.transform.position)).z > aimZCutoff)) {
             aimPoint.position = hit.point;
         }
         else {

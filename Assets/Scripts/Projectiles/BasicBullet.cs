@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasicBullet : MonoBehaviour
+public class BasicBullet : Utils
 {
     public bool pendingDestroy = false;
     ParticleSystem particleEmitter;
@@ -12,12 +12,17 @@ public class BasicBullet : MonoBehaviour
     public float speed;
     public float lifespan;
     public float sizeMultiplier;
+    public float knockbackForce;
+
+    // Since this script inherits from Utils, I need to override Awake() as it calls GetGlobals(), which doesn't work well with prefabs on Awake()
+    void Awake() {}
 
     void Start() 
     {
+        GetGlobals();
+        
         particleEmitter = GetComponentInChildren<ParticleSystem>();
 
-        //particleEmitter.transform.localScale = Vector3.one * sizeMultiplier/2f;
         GetComponent<Rigidbody>().velocity = transform.rotation * -(Vector3.up * speed);
         StartCoroutine("LifespanTimeout");
     }
@@ -30,9 +35,20 @@ public class BasicBullet : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
     private void OnTriggerEnter(Collider collider)
     {
-        // TODO: Call OnHit() on object hit if it's an entity
+        RaycastHit hit;
+        if(Physics.Raycast(lastPos, (transform.position - lastPos), out hit, Vector3.Distance(lastPos, transform.position), g.layerMasks["Player Bullet"])) {
+            // Makes the particle effects look a lot better with high speed bullets, and also makes sure they don't clip too much
+            // This is also used to accurately apply knockback to entities
+            transform.position = hit.point;
+        }
+
+        Entity entity;
+        if (collider.TryGetComponent<Entity>(out entity)) {
+            entity.OnHit(gameObject, damage, knockbackForce);
+        }
 
         QueueDestroy();
     }
@@ -50,12 +66,6 @@ public class BasicBullet : MonoBehaviour
         Destroy(GetComponent<MeshRenderer>());
         Destroy(GetComponent<CapsuleCollider>());
         Destroy(GetComponent<Rigidbody>());
-
-        RaycastHit hit;
-        if(Physics.Raycast(lastPos, (transform.position - lastPos), out hit, Vector3.Distance(lastPos, transform.position), LayerMask.NameToLayer("Player Bullet"))) {
-            // Makes the particle effects look a lot better with high speed bullets, and also makes sure they don't clip too much
-            particleEmitter.transform.position = hit.point;
-        }
 
         particleEmitter.Play();
     }

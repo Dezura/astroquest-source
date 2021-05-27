@@ -32,6 +32,7 @@ public class CustomizableGunEditor : Editor
                     "autofire",
                     "damage",
                     "firerate",
+                    "projectileKnockback",
                     "projectileSize",
                     "projectileSpeed",
                     "projectileLifespan"
@@ -40,14 +41,6 @@ public class CustomizableGunEditor : Editor
                 break;
             case 1: // Shotgun
                 currentGunParams = new string[] {
-                    "projectileType",
-                    "autofire",
-                    "damage",
-                    "firerate",
-                    "projectileSize",
-                    "projectileSpeed",
-                    "projectileLifespan",
-                    "multishot"
                 };
 
                 break;

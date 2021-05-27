@@ -87,20 +87,20 @@ public class ShipMovement : Utils
     public void HandleMovement()
     {
         // Applies basic movement force for x and y, that force then rotated by it's own rotation
-        main.rigidBody.AddForce(transform.rotation * (new Vector3(clampedMoveDir.x, clampedMoveDir.y, 0) * moveSpeed * 100f));
+        main.entity.rigidBody.AddForce(transform.rotation * (new Vector3(clampedMoveDir.x, clampedMoveDir.y, 0) * moveSpeed * 100f));
 
         // Applies special force to z
         // If moving forward, it rotates velocity by the model rotation instead of it's own rotation
         if (clampedMoveDir.z > 0) {
-            main.rigidBody.AddForce(main.modelTransform.rotation * (new Vector3(0, 0, clampedMoveDir.z) * moveSpeed * 150f));
+            main.entity.rigidBody.AddForce(main.modelTransform.rotation * (new Vector3(0, 0, clampedMoveDir.z) * moveSpeed * 150f));
         }
         // Else if moving backwards, it rotates by it's own rotation
         else {
-            main.rigidBody.AddForce(transform.rotation * (new Vector3(0, 0, clampedMoveDir.z) * moveSpeed * 100f));
+            main.entity.rigidBody.AddForce(transform.rotation * (new Vector3(0, 0, clampedMoveDir.z) * moveSpeed * 100f));
         }
 
         // Handles rolling and stuff with the w axis of inputVector
-        main.rigidBody.AddTorque(main.modelTransform.rotation * new Vector3(0, 0, -inputVector.w * rollAmount * 10f));
+        main.entity.rigidBody.AddTorque(main.modelTransform.rotation * new Vector3(0, 0, -inputVector.w * rollAmount * 10f));
 
         // Applies rotation force to model based on x movement
         moveModelTorque["current"] = Mathf.Lerp(moveModelTorque["current"], -Mathf.Clamp(clampedMoveDir.x + inputVector.w, -1, 1) * moveModelTorque["max"], moveModelTorque["lerpSpeed"] * Time.fixedDeltaTime);
@@ -109,7 +109,7 @@ public class ShipMovement : Utils
 
     public void UpdateThrusterSpeeds()
     {
-        float thrusterMaxMulti = clampedMoveDir.z + Vector2.ClampMagnitude(g.virtualMouse.vMouseOffset, 1).magnitude * 1.25f;
+        float thrusterMaxMulti = clampedMoveDir.z + Vector2.ClampMagnitude(g.virtualMouse.vMouseOffset, 1).magnitude;
 
         if (thrusterMaxMulti <= 0.4f) thrusterMaxMulti = 0;
 

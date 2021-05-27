@@ -22,6 +22,7 @@ public class CustomizableGun : Utils
     public float multishot = 1f;
     public float projectileSpeed = 60f;
     public float projectileLifespan = 1f;
+    public float projectileKnockback = 1f;
 
     public bool canShoot = true;
     
@@ -58,6 +59,7 @@ public class CustomizableGun : Utils
             projectile.speed = projectileSpeed;
             projectile.lifespan = projectileLifespan;
             projectile.sizeMultiplier = projectileSize;
+            projectile.knockbackForce = projectileKnockback;
         }
         canShoot = false;
         StartCoroutine("FirerateRefresh");

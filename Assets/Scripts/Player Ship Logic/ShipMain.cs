@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class ShipMain : Utils
+public class ShipMain : BaseAI
 {
     public Camera cam;
     public Cinemachine.CinemachineVirtualCamera vCam;
@@ -13,29 +13,32 @@ public class ShipMain : Utils
     public CustomizableGun[] currentGuns;
 
     [HideInInspector] public PlayerInput controls;
-    [HideInInspector] public Rigidbody rigidBody;
     [HideInInspector] public ShipMovement shipMovement;
     [HideInInspector] public ShipLook shipLook;
 
     void Awake() 
     {
         GetGlobals();
+        entity = GetComponent<Entity>();
         controls = GetComponent<PlayerInput>();
 
-        rigidBody = GetComponent<Rigidbody>();
         shipMovement = GetComponent<ShipMovement>();
         shipLook = GetComponent<ShipLook>();
     }
 
-    void Update()
+    void Start() {} // Override BaseAI Start()
+
+    public override void UpdateAI()
     {
         foreach (CustomizableGun gun in currentGuns)
         {
             gun.CheckMouseClick(Mouse.current);
         }
+
+        shipMovement.UpdateThrusterSpeeds();
     }
 
-    void FixedUpdate()
+    public override void FixedUpdateAI()
     {
         shipLook.UpdateCameraPoints(); // Sets positions of camera points, then the camera automatically updates its position based on the points
         shipLook.UpdateAimPoint();
@@ -44,8 +47,12 @@ public class ShipMain : Utils
         shipLook.HandleMainRotation();
 
         shipLook.ApplyModelRotations();
-        shipMovement.UpdateThrusterSpeeds();
 
         shipLook.HandleAimGunsRotations();
+    }
+
+    public override void OnDeath(GameObject hitSource)
+    {
+        Debug.Log("You were killed by " + hitSource.name);
     }
 }
