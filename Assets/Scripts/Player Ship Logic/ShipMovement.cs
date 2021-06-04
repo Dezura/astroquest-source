@@ -120,8 +120,6 @@ public class ShipMovement : Utils
             ParticleSystem.EmissionModule particleEmission = thruster.emission;
             ParticleSystem.MainModule particleMain = thruster.main;
             
-            
-            
             particleEmission.rateOverTime = thrustersSpeed["current"];
             particleMain.startLifetime = thrustersSpeed["current"]/300f;
         }

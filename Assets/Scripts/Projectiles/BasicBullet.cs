@@ -45,9 +45,9 @@ public class BasicBullet : Utils
             transform.position = hit.point;
         }
 
-        Entity entity;
-        if (collider.TryGetComponent<Entity>(out entity)) {
-            entity.OnHit(gameObject, damage, knockbackForce);
+        EntityForwarder entityForwarder;
+        if (collider.TryGetComponent<EntityForwarder>(out entityForwarder)) {
+            entityForwarder.targetEntity.OnHit(gameObject, damage, knockbackForce);
         }
 
         QueueDestroy();

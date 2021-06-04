@@ -7,6 +7,7 @@ public class Globals : MonoBehaviour
 {
     public ShipMain playerShip;
     public VirtualMouse virtualMouse;
+    public Camera mainCamera;
 
     public Transform projectileSpawns;
 
