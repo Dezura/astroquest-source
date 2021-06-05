@@ -23,9 +23,6 @@ public class ShipLook : Utils
     public float aimMaxDistance = 500f;
     public float aimZCutoff = 13.75f;
 
-    public Transform[] aimGunTransforms;
-    public float aimGunSpeed = 5f;
-
     [HideInInspector] public Dictionary<string, Vector3> modelTorques = new Dictionary<string, Vector3>();
 
     Vector3 camPoint1StartPos;
@@ -91,13 +88,5 @@ public class ShipLook : Utils
     public void AddModelTorque(string torqueSource, Vector3 torqueAmount)
     {
         modelTorques[torqueSource] = Vector3.Lerp(modelTorques[torqueSource], torqueAmount, torqueLerp);
-    }
-
-    public void HandleAimGunsRotations()
-    {
-        foreach (Transform gunTransform in aimGunTransforms)
-        {
-            gunTransform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(-gunTransform.forward, aimPoint.position - gunTransform.position, aimGunSpeed * Time.fixedDeltaTime, 0.0f), main.modelTransform.up) * Quaternion.Euler(0, 180, 0);
-        }
     }
 }

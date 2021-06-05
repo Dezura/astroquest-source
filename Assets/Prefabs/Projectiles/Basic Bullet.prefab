@@ -49,11 +49,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7731209f2e8de5842961d430d6e9913a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  g: {fileID: 0}
   pendingDestroy: 0
   damage: 0
   speed: 0
   lifespan: 0
   sizeMultiplier: 0
+  knockbackForce: 0
 --- !u!108 &8031151208307064686
 Light:
   m_ObjectHideFlags: 0

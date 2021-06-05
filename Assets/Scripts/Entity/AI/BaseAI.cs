@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // This is a base class all entities inherit from
-// 
 
 public class BaseAI : Utils
 {

@@ -10,8 +10,7 @@ public class ShipMain : BaseAI
     
     public Transform modelTransform;
     
-    public CustomizableGun[] currentGuns;
-
+    [HideInInspector] public GunManager gunManager;
     [HideInInspector] public PlayerInput controls;
     [HideInInspector] public ShipMovement shipMovement;
     [HideInInspector] public ShipLook shipLook;
@@ -24,16 +23,18 @@ public class ShipMain : BaseAI
 
         shipMovement = GetComponent<ShipMovement>();
         shipLook = GetComponent<ShipLook>();
+
+        gunManager = GetComponentInChildren<GunManager>();
+
+        gunManager.SetCurrentGun("Blaster");
+        gunManager.AimGunPoints(shipLook.aimPoint.position, modelTransform.up, true);
     }
 
     void Start() {} // Override BaseAI Start()
 
     public override void UpdateAI()
     {
-        foreach (CustomizableGun gun in currentGuns)
-        {
-            gun.CheckMouseClick(Mouse.current);
-        }
+        CheckMouseClick(Mouse.current);
 
         shipMovement.UpdateThrusterSpeeds();
     }
@@ -48,7 +49,14 @@ public class ShipMain : BaseAI
 
         shipLook.ApplyModelRotations();
 
-        shipLook.HandleAimGunsRotations();
+        gunManager.AimGunPoints(shipLook.aimPoint.position, modelTransform.up);
+    }
+
+    public void CheckMouseClick(Mouse mouse)
+    {
+        if ((gunManager.currentGun.autofire && mouse.leftButton.isPressed) || (!gunManager.currentGun.autofire && mouse.leftButton.wasPressedThisFrame)) {
+            gunManager.Shoot();
+        }
     }
 
     public override void OnDeath(GameObject hitSource)
