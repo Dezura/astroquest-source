@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Helminth : EnemyAI
 {
+    public override void Init()
+    {
+        gunManager.SetCurrentGun("Blaster");
+        gunManager.AimGunPoints(g.playerShip.transform.position, transform.up, true);
+    }
+
     public override void UpdateAI()
     {
         transform.LookAt(target, target.up);
@@ -18,9 +24,13 @@ public class Helminth : EnemyAI
 
     public override void WhileInAttackRange()
     {
-        AvoidMouse();
+        gunManager.AimGunPoints(g.playerShip.transform.position, transform.up);
+        gunManager.Shoot();
+    }
 
-       // TODO: Add aiming and shooting logic 
+    public override void WhileInCloseRange()
+    {
+        AvoidMouse();
     }
 
     public override void OnHit(GameObject hitSource, float damage, float forceApplied = 0)

@@ -18,7 +18,7 @@ public class GunManager : Utils
 
                 currentGun = transform.GetChild(0).gameObject.AddComponent<Blaster>();
                 currentGun.gunManager = this;
-                currentGun.Init();
+                currentGun.tag = gameObject.tag;
 
                 break;
             

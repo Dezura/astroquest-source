@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class EnemyAI : BaseAI
 {
+    public GunManager gunManager;
+
     public float speed = 300f;
 
     public DetectionArea detectionArea;
+    public DetectionArea closeDetectionArea;
 
     public GameObject thrusterRoot;
 
@@ -32,6 +35,8 @@ public class EnemyAI : BaseAI
         entity = GetComponent<Entity>();
 
         target = g.playerShip.transform;
+
+        Init();
     }
 
     void Update() // Overriding this instead of using UpdateAI() to make it simpler when writing enemy AI
@@ -40,6 +45,7 @@ public class EnemyAI : BaseAI
 
         distanceFromTarget = Vector3.Distance(transform.position, target.position);
 
+        if (closeDetectionArea.overlappingEntities.Contains(g.playerShip.entity)) {WhileInCloseRange();}
         if (detectionArea.overlappingEntities.Contains(g.playerShip.entity)) {WhileInAttackRange();}
         else {WhileOutOfRange();}
 
@@ -85,7 +91,7 @@ public class EnemyAI : BaseAI
 
     public void AvoidNearbyContact()
     {
-        foreach (Entity detectedEntity in detectionArea.overlappingEntities) { // First avoid colliding with enemies and keep distance (This also give an illusion of a more complex groupthinking type AI)
+        foreach (Entity detectedEntity in closeDetectionArea.overlappingEntities) { // First avoid colliding with enemies and keep distance (This also give an illusion of a more complex groupthinking type AI)
             if (!detectedEntity) continue; // If the entity is dead, but it's still in the overlapping list, skip to next iteration
             EnemyAI enemy;
             ShipMain playerShip;
@@ -110,7 +116,11 @@ public class EnemyAI : BaseAI
 
     // Override these functions in ai scripts as needed
 
+    public virtual void Init() {}
+
     public virtual void WhileOutOfRange() {}
 
     public virtual void WhileInAttackRange() {}
+
+    public virtual void WhileInCloseRange() {}
 }

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BaseGun : Utils
 {
+    public LayerMask bulletMask;
+
     public GunManager gunManager;
 
     public GameObject bulletPrefab;
@@ -13,7 +15,7 @@ public class BaseGun : Utils
 
     [Header("Gun Stats (Some stats may not be applicable to every gun type)")]
     public bool autofire = false;
-    public float firerate = 20f;
+    public float firerate = 60f;
     public float multishot = 1f;
     public float accuracy = 0.1f;
 
@@ -31,6 +33,10 @@ public class BaseGun : Utils
     void Start()
     {
         GetGlobals();
+
+        Init();
+        
+        FixStats();
     }
 
     private IEnumerator FirerateRefresh()
@@ -64,4 +70,6 @@ public class BaseGun : Utils
     public virtual void Init() {}
 
     public virtual void OnShoot() {}
+
+    public virtual void FixStats() {} // Use this to adjust certain stats (eg, less damage per projectile on shotguns)
 }
