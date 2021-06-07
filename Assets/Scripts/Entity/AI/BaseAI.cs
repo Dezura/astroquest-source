@@ -68,7 +68,7 @@ public class BaseAI : Utils
 
     public virtual void FixedUpdateAI() {}
 
-    public virtual void OnHit(GameObject hitSource, float damage, float forceApplied = 0) 
+    public virtual void AfterHit(GameObject hitSource, float damage, float forceApplied = 0, Vector3? hitPosition = null) // Do not use this directly to apply damage 
     {
         HitFlash();
     }

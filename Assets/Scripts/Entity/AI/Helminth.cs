@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Liberator : EnemyAI
+public class Helminth : EnemyAI
 {
     public override void Init()
     {
         gunManager.SetCurrentGun("Blaster");
         gunManager.AimGunPoints(g.playerShip.transform.position, transform.up, true);
 
-        playerAvoidanceDistance = 45f;
-        enemyAvoidanceDistance = 45f;
+        playerAvoidanceDistance = 30f;
+        enemyAvoidanceDistance = 30f;
     }
 
     public override void UpdateAI()
@@ -18,17 +18,12 @@ public class Liberator : EnemyAI
         transform.LookAt(target, target.up);
 
         gunManager.AimGunPoints(g.playerShip.transform.position, transform.up);
-    }
 
-    public override void WhileOutOfRange()
-    {
         MoveTowards(target.position);
     }
 
     public override void WhileInAttackRange()
     {
-        MoveTowards(target.position);
-        
         gunManager.Shoot();
 
         AvoidNearbyContactFrom("Enemy");
@@ -36,12 +31,9 @@ public class Liberator : EnemyAI
 
     public override void WhileInCloseRange()
     {
-        AvoidMouse();
-
         gunManager.Shoot();
 
         AvoidNearbyContactFrom("Enemy");
-        AvoidNearbyContactFrom("Player");
     }
 
     public override void WhileDead() 

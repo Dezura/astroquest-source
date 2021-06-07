@@ -33,9 +33,9 @@ public class Albert : BaseAI
         }
     }
 
-    public override void OnHit(GameObject hitSource, float damage, float forceApplied = 0)
+    public override void AfterHit(GameObject hitSource, float damage, float forceApplied = 0, Vector3? hitPosition = null)
     {
-        base.OnHit(hitSource, damage, forceApplied);
+        base.AfterHit(hitSource, damage, forceApplied);
         
         if (!angry) {angry = true; GetComponentInChildren<ParticleSystem>().Play();}
 

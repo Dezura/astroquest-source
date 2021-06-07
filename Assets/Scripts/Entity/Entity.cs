@@ -25,18 +25,18 @@ public class Entity : MonoBehaviour
         hp["current"] = hp["max"];
     }
 
-    public void OnHit(GameObject hitSource, float damage, float forceApplied = 0)
+    public void OnHit(GameObject hitSource, float damage, float forceApplied = 0, Vector3? hitPosition = null)
     {
-        if (blockedDamageSources.Contains(hitSource) || isDead) {
-            return;
-        }
+        if (blockedDamageSources.Contains(hitSource) || isDead) return;
+
+        if (hitPosition == null) hitPosition = hitSource.transform.position;
 
         BaseAI aiScript;
         if (transform.TryGetComponent<BaseAI>(out aiScript)) {
-            aiScript.OnHit(hitSource, damage, forceApplied);
+            aiScript.AfterHit(hitSource, damage, forceApplied, hitPosition);
         }
 
-        rigidBody.AddExplosionForce(forceApplied, hitSource.transform.position, 1f, 0, ForceMode.Impulse);
+        rigidBody.AddExplosionForce(forceApplied, (Vector3) hitPosition, 1f, 0, ForceMode.Impulse);
         TakeDamage(hitSource, damage);
         
         StartCoroutine("UnblockObject", hitSource);

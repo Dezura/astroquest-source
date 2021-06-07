@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 62626388816812639}
+  - component: {fileID: 8839753263887199474}
   - component: {fileID: 8231597319636034632}
   - component: {fileID: 4426889848359288770}
   m_Layer: 8
@@ -37,6 +38,32 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8839753263887199474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62626388816812638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0aa4e1a846cd7574d91fa0dfa949cb3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  g: {fileID: 0}
+  entity: {fileID: 0}
+  gunManager: {fileID: 9092048389767706778}
+  model: {fileID: 7239031032654405570}
+  speed: 300
+  contactDamage: 500
+  detectionArea: {fileID: 2922412913825365689}
+  closeDetectionArea: {fileID: 3394775102189200334}
+  thrusterRoot: {fileID: 2121155948904720203}
+  distanceFromTarget: 0
+  target: {fileID: 0}
+  playerAvoidanceDistance: 20
+  enemyAvoidanceDistance: 20
+  mouseAvoidanceDistance: 250
 --- !u!114 &8231597319636034632
 MonoBehaviour:
   m_ObjectHideFlags: 0

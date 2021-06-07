@@ -9,6 +9,8 @@ public class EnemyAI : BaseAI
 
     public float speed = 300f;
 
+    public float contactDamage = 200f;
+
     public DetectionArea detectionArea;
     public DetectionArea closeDetectionArea;
 
@@ -126,7 +128,7 @@ public class EnemyAI : BaseAI
 
     public override void WhileDead()
     {
-        
+        Destroy(gameObject);
     }
 
     // Override these functions in ai scripts as needed
