@@ -31,6 +31,36 @@ public class BaseAI : Utils
         FixedUpdateAI();
     }
 
+    private IEnumerator RevertFlashAfter(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+
+        foreach (MeshRenderer mesh in transform.GetComponentsInChildren<MeshRenderer>())
+        {
+            foreach (Material material in mesh.materials)
+            {
+                material.SetColor("_EmissionColor", Color.black);
+            }
+        }
+    }
+
+    public void HitFlash()
+    {
+        StopCoroutine("RevertFlashAfter");
+
+        foreach (MeshRenderer mesh in transform.GetComponentsInChildren<MeshRenderer>())
+        {
+            foreach (Material material in mesh.materials)
+            {
+                if (!material.IsKeywordEnabled("_EMISSION")) {
+                    material.EnableKeyword("_EMISSION");
+                }
+                material.SetColor("_EmissionColor", new Color(0.2f, 0.2f, 0.2f));
+            }
+        }
+
+        StartCoroutine("RevertFlashAfter", 0.075f);
+    }
 
     // Override these functions in ai scripts as needed
 
@@ -38,7 +68,10 @@ public class BaseAI : Utils
 
     public virtual void FixedUpdateAI() {}
 
-    public virtual void OnHit(GameObject hitSource, float damage, float forceApplied = 0) {}
+    public virtual void OnHit(GameObject hitSource, float damage, float forceApplied = 0) 
+    {
+        HitFlash();
+    }
 
     public virtual void OnDeath(GameObject hitSource) {} // Keep init type stuff on death here, don't destroy to follow design
 

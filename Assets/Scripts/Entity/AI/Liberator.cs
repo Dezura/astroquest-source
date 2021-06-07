@@ -42,19 +42,7 @@ public class Liberator : EnemyAI
 
         AvoidNearbyContactFrom("Player");
     }
-
-    public override void OnHit(GameObject hitSource, float damage, float forceApplied = 0)
-    {
-        
-    }
-
-    public override void OnDeath(GameObject hitSource)
-    {
-        // TODO: Add explosion and random flying scrap
-        // TODO: Add screenshake on death
-        // TODO: Give points to score on death
-    }
-
+    
     public override void WhileDead() 
     {
         Destroy(gameObject);

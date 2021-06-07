@@ -35,6 +35,8 @@ public class Albert : BaseAI
 
     public override void OnHit(GameObject hitSource, float damage, float forceApplied = 0)
     {
+        base.OnHit(hitSource, damage, forceApplied);
+        
         if (!angry) {angry = true; GetComponentInChildren<ParticleSystem>().Play();}
 
         Debug.Log("Albert took " + damage + " Damage And Has " + entity.hp["current"] + " Health Remaining!");

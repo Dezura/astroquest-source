@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyAI : BaseAI
 {
     public GunManager gunManager;
+    public MeshRenderer model;
 
     public float speed = 300f;
 
@@ -112,6 +113,20 @@ public class EnemyAI : BaseAI
                 }
             }
         }
+    }
+
+    public override void OnDeath(GameObject hitSource)
+    {
+        base.OnDeath(hitSource);
+
+        // TODO: Add explosion and random flying scrap
+        // TODO: Add screenshake on death
+        // TODO: Give points to score on death
+    }
+
+    public override void WhileDead()
+    {
+        
     }
 
     // Override these functions in ai scripts as needed

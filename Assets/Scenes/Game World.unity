@@ -21568,7 +21568,7 @@ MonoBehaviour:
   cam: {fileID: 181763993}
   vCam: {fileID: 616818261}
   modelTransform: {fileID: 2117437204}
-  gunManager: {fileID: 0}
+  gunManager: {fileID: 402250113}
   controls: {fileID: 0}
   shipMovement: {fileID: 0}
   shipLook: {fileID: 0}

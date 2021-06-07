@@ -53,6 +53,7 @@ MonoBehaviour:
   g: {fileID: 0}
   entity: {fileID: 0}
   gunManager: {fileID: 9092048389767706778}
+  model: {fileID: 5796724505375281507}
   speed: 100
   detectionArea: {fileID: 2922412913825365689}
   closeDetectionArea: {fileID: 3394775102189200334}
