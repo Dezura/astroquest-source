@@ -17,9 +17,9 @@ public class EnemyAI : BaseAI
 
     [HideInInspector] public Transform target;
 
-    [HideInInspector] float playerAvoidanceDistance = 20f;
-    [HideInInspector] float enemyAvoidanceDistance = 20f;
-    [HideInInspector] float mouseAvoidanceDistance = 250f;
+    [HideInInspector] public float playerAvoidanceDistance = 20f;
+    [HideInInspector] public float enemyAvoidanceDistance = 20f;
+    [HideInInspector] public float mouseAvoidanceDistance = 250f;
 
     Dictionary<string, float> thrustersSpeed = new Dictionary<string, float>
     {
@@ -46,7 +46,7 @@ public class EnemyAI : BaseAI
         distanceFromTarget = Vector3.Distance(transform.position, target.position);
 
         if (closeDetectionArea.overlappingEntities.Contains(g.playerShip.entity)) {WhileInCloseRange();}
-        if (detectionArea.overlappingEntities.Contains(g.playerShip.entity)) {WhileInAttackRange();}
+        else if (detectionArea.overlappingEntities.Contains(g.playerShip.entity)) {WhileInAttackRange();}
         else {WhileOutOfRange();}
 
         UpdateAI();
@@ -89,14 +89,14 @@ public class EnemyAI : BaseAI
         }
     }
 
-    public void AvoidNearbyContact()
+    public void AvoidNearbyContactFrom(string from)
     {
         foreach (Entity detectedEntity in closeDetectionArea.overlappingEntities) { // First avoid colliding with enemies and keep distance (This also give an illusion of a more complex groupthinking type AI)
             if (!detectedEntity) continue; // If the entity is dead, but it's still in the overlapping list, skip to next iteration
             EnemyAI enemy;
             ShipMain playerShip;
 
-            if (detectedEntity.TryGetComponent<EnemyAI>(out enemy)) {
+            if (detectedEntity.TryGetComponent<EnemyAI>(out enemy) && from == "Enemy") {
                 if (Vector3.Distance(transform.position, enemy.transform.position) <= enemyAvoidanceDistance) {
                     Vector3 moveDir = (transform.position - enemy.transform.position).normalized;
 
@@ -104,7 +104,7 @@ public class EnemyAI : BaseAI
                 }
             }
 
-            else if (detectedEntity.TryGetComponent<ShipMain>(out playerShip)) {
+            else if (detectedEntity.TryGetComponent<ShipMain>(out playerShip) && from == "Player") {
                 if (Vector3.Distance(transform.position, playerShip.transform.position) <= playerAvoidanceDistance) {
                     Vector3 moveDir = (transform.position - playerShip.transform.position).normalized;
 

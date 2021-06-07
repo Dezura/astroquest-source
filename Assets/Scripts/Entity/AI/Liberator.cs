@@ -2,19 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Helminth : EnemyAI
+public class Liberator : EnemyAI
 {
     public override void Init()
     {
         gunManager.SetCurrentGun("Blaster");
         gunManager.AimGunPoints(g.playerShip.transform.position, transform.up, true);
+
+        playerAvoidanceDistance = 45f;
+        enemyAvoidanceDistance = 45f;
     }
 
     public override void UpdateAI()
     {
         transform.LookAt(target, target.up);
-        
-        AvoidNearbyContact();
     }
 
     public override void WhileOutOfRange()
@@ -24,13 +25,22 @@ public class Helminth : EnemyAI
 
     public override void WhileInAttackRange()
     {
+        MoveTowards(target.position);
+
         gunManager.AimGunPoints(g.playerShip.transform.position, transform.up);
         gunManager.Shoot();
+
+        AvoidNearbyContactFrom("Enemy");
     }
 
     public override void WhileInCloseRange()
     {
         AvoidMouse();
+
+        gunManager.AimGunPoints(g.playerShip.transform.position, transform.up);
+        gunManager.Shoot();
+
+        AvoidNearbyContactFrom("Player");
     }
 
     public override void OnHit(GameObject hitSource, float damage, float forceApplied = 0)
@@ -42,6 +52,7 @@ public class Helminth : EnemyAI
     {
         // TODO: Add explosion and random flying scrap
         // TODO: Add screenshake on death
+        // TODO: Give points to score on death
     }
 
     public override void WhileDead() 
