@@ -24,6 +24,7 @@ public class Blaster : BaseGun
 
             shootPoints.Add(point);
             
+            newModel.transform.localScale = Vector3.Scale(newModel.transform.localScale, point.localScale);
             newModel.transform.localPosition = Vector3.zero;
             newModel.transform.localRotation = Quaternion.Euler(0, 0, 0);
         }

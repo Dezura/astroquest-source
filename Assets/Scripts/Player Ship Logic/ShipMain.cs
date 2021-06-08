@@ -44,6 +44,7 @@ public class ShipMain : BaseAI
     public override void FixedUpdateAI()
     {
         shipLook.UpdateCameraPoints(); // Sets positions of camera points, then the camera automatically updates its position based on the points
+        shipLook.UpdateMovePoint();
         shipLook.UpdateAimPoint();
 
         shipMovement.HandleMovement();
@@ -63,6 +64,7 @@ public class ShipMain : BaseAI
 
     void OnCollisionEnter(Collision other) 
     {
+        // TODO: Make screenshake when you bump into stuff
         // Following code will be used to apply knockback to the player when it hits something, and have it take damage if it hits an enemy.
 
         Vector3 averagedHitPoint = Vector3.zero;

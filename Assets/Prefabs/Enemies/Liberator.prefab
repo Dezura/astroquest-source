@@ -53,8 +53,9 @@ MonoBehaviour:
   g: {fileID: 0}
   entity: {fileID: 0}
   gunManager: {fileID: 9092048389767706778}
-  model: {fileID: 5796724505375281507}
+  startingGun: Blaster
   speed: 100
+  contactDamage: 200
   detectionArea: {fileID: 2922412913825365689}
   closeDetectionArea: {fileID: 3394775102189200334}
   thrusterRoot: {fileID: 2121155948904720203}
@@ -10113,9 +10114,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8038903632480133071}
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.0039999997, y: -1.1084, z: 2.67615}
-  m_LocalScale: {x: 100, y: 99.999985, z: 99.999985}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 8221330804753348759}
   m_RootOrder: 0

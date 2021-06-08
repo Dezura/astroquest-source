@@ -6,6 +6,7 @@ public class ShipLook : Utils
 {
     private ShipMain main;
 
+    public Transform movePoint;
     public Transform aimPoint;
     public Transform[] cameraPoints = new Transform[3];
 
@@ -43,18 +44,19 @@ public class ShipLook : Utils
 
     public void HandleMainRotation()
     {
-        Vector2 normalizedRotateVector = Vector2.ClampMagnitude(new Vector2(-vm.vMouseOffset.y, vm.vMouseOffset.x), 1) * lookRotationAmount * Time.fixedDeltaTime * 15;
+        if (vm.isAiming) return;
+        Vector2 normalizedRotateVector = Vector2.ClampMagnitude(new Vector2(-vm.vMouseOffset[0].y, vm.vMouseOffset[0].x), 1) * lookRotationAmount * Time.fixedDeltaTime * 15;
         transform.Rotate(new Vector3(normalizedRotateVector.x, normalizedRotateVector.y, 0), Space.Self);
     }
 
     public void ApplyModelRotations()
     {
-        lerpMousePos[0] = Vector2.Lerp(lerpMousePos[0], vm.vMousePosition, lookLerp * Time.fixedDeltaTime * 100);
+        lerpMousePos[0] = Vector2.Lerp(lerpMousePos[0], vm.vMousePosition[0], lookLerp * Time.fixedDeltaTime * 100);
         Ray screenRay = main.cam.ScreenPointToRay(lerpMousePos[0]);
 
         main.modelTransform.LookAt(screenRay.GetPoint(aimMaxDistance), transform.up);
 
-        AddModelTorque("Look", new Vector3(0, 0, -vm.vMouseOffset.x * aimTorqueAmount));
+        AddModelTorque("Look", new Vector3(0, 0, -vm.vMouseOffset[0].x * aimTorqueAmount));
 
         // Does the thing where the ship model rotates left or right, depending on forces
         foreach (Vector3 torque in modelTorques.Values)
@@ -66,16 +68,27 @@ public class ShipLook : Utils
     public void UpdateCameraPoints()
     {
         // Point 1
-        cameraPoints[1].localPosition = camPoint1StartPos + new Vector3(vm.vMouseOffset.x * cameraAdaptiveLookAmount.x, vm.vMouseOffset.y * cameraAdaptiveLookAmount.y, 0);
+        cameraPoints[1].localPosition = camPoint1StartPos + new Vector3(vm.vMouseOffset[1].x * cameraAdaptiveLookAmount.x, vm.vMouseOffset[1].y * cameraAdaptiveLookAmount.y, 0);
 
         // Point 2
         cameraPoints[2].position = Vector3.Lerp(cameraPoints[0].position, cameraPoints[1].position, cameraAdaptiveFollowAmount);
+    }
 
+    public void UpdateMovePoint()
+    {
+        Ray screenRay = main.cam.ScreenPointToRay(g.virtualMouse.vMousePosition[0]);
+        RaycastHit hit;
+        if (Physics.Raycast(screenRay.origin, screenRay.direction, out hit, aimMaxDistance, g.layerMasks["Player Bullet"]) && ((Quaternion.Inverse(main.cam.transform.rotation) * (hit.point - main.cam.transform.position)).z > aimZCutoff)) {
+            movePoint.position = hit.point;
+        }
+        else {
+            movePoint.position = screenRay.GetPoint(aimMaxDistance/8f);
+        }
     }
 
     public void UpdateAimPoint()
     {
-        Ray screenRay = main.cam.ScreenPointToRay(g.virtualMouse.vMousePosition);
+        Ray screenRay = main.cam.ScreenPointToRay(g.virtualMouse.vMousePosition[1]);
         RaycastHit hit;
         if (Physics.Raycast(screenRay.origin, screenRay.direction, out hit, aimMaxDistance, g.layerMasks["Player Bullet"]) && ((Quaternion.Inverse(main.cam.transform.rotation) * (hit.point - main.cam.transform.position)).z > aimZCutoff)) {
             aimPoint.position = hit.point;

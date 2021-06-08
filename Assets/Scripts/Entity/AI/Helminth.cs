@@ -6,9 +6,6 @@ public class Helminth : EnemyAI
 {
     public override void Init()
     {
-        gunManager.SetCurrentGun("Blaster");
-        gunManager.AimGunPoints(g.playerShip.transform.position, transform.up, true);
-
         playerAvoidanceDistance = 30f;
         enemyAvoidanceDistance = 30f;
     }

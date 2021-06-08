@@ -6,9 +6,6 @@ public class Liberator : EnemyAI
 {
     public override void Init()
     {
-        gunManager.SetCurrentGun("Blaster");
-        gunManager.AimGunPoints(g.playerShip.transform.position, transform.up, true);
-
         playerAvoidanceDistance = 45f;
         enemyAvoidanceDistance = 45f;
     }

@@ -109,7 +109,8 @@ public class ShipMovement : Utils
 
     public void UpdateThrusterSpeeds()
     {
-        float thrusterMaxMulti = clampedMoveDir.z + Vector2.ClampMagnitude(g.virtualMouse.vMouseOffset, 1).magnitude;
+        float thrusterMaxMulti = clampedMoveDir.z;
+        if (!g.virtualMouse.isAiming) thrusterMaxMulti += Vector2.ClampMagnitude(g.virtualMouse.vMouseOffset[0], 1).magnitude;
 
         if (thrusterMaxMulti <= 0.4f) thrusterMaxMulti = 0;
 
