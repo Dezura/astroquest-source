@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Liberator : EnemyAI
+public class Orion : EnemyAI
 {
     public override void Init()
     {
-        playerAvoidanceDistance = 45f;
-        enemyAvoidanceDistance = 45f;
+        playerAvoidanceDistance = 20f;
+        enemyAvoidanceDistance = 20f;
+
+        mouseAvoidanceDistance = 15000f;
     }
 
     public override void UpdateAI()
