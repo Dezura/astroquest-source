@@ -9,6 +9,13 @@ public class GunManager : Utils
     public List<Transform> gunPoints;
     public float gunAimSpeed = 5f;
 
+    void Awake() {}
+
+    void Start() 
+    {
+        GetGlobals();
+    }
+
     public void SetCurrentGun(string gunName)
     {
         switch (gunName)
