@@ -5,9 +5,8 @@ using UnityEngine.InputSystem;
 
 public class ShipMain : BaseAI
 {
-    public Camera cam;
-    public Cinemachine.CinemachineVirtualCamera vCam;
-    
+    public PlayerCamera playerCamera;
+
     public Transform modelTransform;
 
     public float contactKnockback = 40;
@@ -55,6 +54,12 @@ public class ShipMain : BaseAI
         gunManager.AimGunPoints(shipLook.aimPoint.position, modelTransform.up);
     }
 
+    public override void AfterHit(GameObject hitSource, float damage, float forceApplied = 0, Vector3? hitPosition = null)
+    {
+        base.AfterHit(hitSource, damage, forceApplied, hitPosition);
+        playerCamera.ApplyScreenShake(0.5f);
+    }
+
     public void CheckMouseClick(Mouse mouse)
     {
         if ((gunManager.currentGun.autofire && mouse.leftButton.isPressed) || (!gunManager.currentGun.autofire && mouse.leftButton.wasPressedThisFrame)) {
@@ -64,7 +69,6 @@ public class ShipMain : BaseAI
 
     void OnCollisionEnter(Collision other) 
     {
-        // TODO: Make screenshake when you bump into stuff
         // Following code will be used to apply knockback to the player when it hits something, and have it take damage if it hits an enemy.
 
         Vector3 averagedHitPoint = Vector3.zero;
@@ -81,11 +85,18 @@ public class ShipMain : BaseAI
             EnemyAI enemyAI;
             if (hitEntityForwarder.targetEntity.TryGetComponent<EnemyAI>(out enemyAI)) {
                 entity.OnHit(enemyAI.gameObject, enemyAI.contactDamage, 2000, averagedHitPoint); // Take extra knockback if it's from an enemy, and take damage
+                playerCamera.ApplyScreenShake(12.5f);
             }
-            else entity.rigidBody.AddExplosionForce(contactKnockback * 1000, averagedHitPoint, 1f);
+            else {
+                entity.rigidBody.AddExplosionForce(contactKnockback * 1000, averagedHitPoint, 1f);
+                playerCamera.ApplyScreenShake(10f);
+            }
         }
 
-        else entity.rigidBody.AddExplosionForce(contactKnockback * 1000, averagedHitPoint, 1f);
+        else {
+            entity.rigidBody.AddExplosionForce(contactKnockback * 1000, averagedHitPoint, 1f);
+            playerCamera.ApplyScreenShake(10f);
+        }
     }
 
     public override void OnDeath(GameObject hitSource)

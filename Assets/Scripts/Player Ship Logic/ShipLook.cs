@@ -24,6 +24,8 @@ public class ShipLook : Utils
     public float aimMaxDistance = 500f;
     public float aimZCutoff = 13.75f;
 
+    public float aimZoom = 30f;
+
     [HideInInspector] public Dictionary<string, Vector3> modelTorques = new Dictionary<string, Vector3>();
 
     Vector3 camPoint1StartPos;
@@ -44,7 +46,7 @@ public class ShipLook : Utils
 
     public void HandleMainRotation()
     {
-        if (vm.isAiming) return;
+        if (vm.isAiming) {main.playerCamera.ApplyZoom(aimZoom); return;}
         Vector2 normalizedRotateVector = Vector2.ClampMagnitude(new Vector2(-vm.vMouseOffset[0].y, vm.vMouseOffset[0].x), 1) * lookRotationAmount * Time.fixedDeltaTime * 15;
         transform.Rotate(new Vector3(normalizedRotateVector.x, normalizedRotateVector.y, 0), Space.Self);
     }
@@ -52,7 +54,7 @@ public class ShipLook : Utils
     public void ApplyModelRotations()
     {
         lerpMousePos[0] = Vector2.Lerp(lerpMousePos[0], vm.vMousePosition[0], lookLerp * Time.fixedDeltaTime * 100);
-        Ray screenRay = main.cam.ScreenPointToRay(lerpMousePos[0]);
+        Ray screenRay = main.playerCamera.cam.ScreenPointToRay(lerpMousePos[0]);
 
         main.modelTransform.LookAt(screenRay.GetPoint(aimMaxDistance), transform.up);
 
@@ -76,9 +78,9 @@ public class ShipLook : Utils
 
     public void UpdateMovePoint()
     {
-        Ray screenRay = main.cam.ScreenPointToRay(g.virtualMouse.vMousePosition[0]);
+        Ray screenRay = main.playerCamera.cam.ScreenPointToRay(g.virtualMouse.vMousePosition[0]);
         RaycastHit hit;
-        if (Physics.Raycast(screenRay.origin, screenRay.direction, out hit, aimMaxDistance, g.layerMasks["Player Bullet"]) && ((Quaternion.Inverse(main.cam.transform.rotation) * (hit.point - main.cam.transform.position)).z > aimZCutoff)) {
+        if (Physics.Raycast(screenRay.origin, screenRay.direction, out hit, aimMaxDistance, g.layerMasks["Player Bullet"]) && ((Quaternion.Inverse(main.playerCamera.cam.transform.rotation) * (hit.point - main.playerCamera.cam.transform.position)).z > aimZCutoff)) {
             movePoint.position = hit.point;
         }
         else {
@@ -88,9 +90,9 @@ public class ShipLook : Utils
 
     public void UpdateAimPoint()
     {
-        Ray screenRay = main.cam.ScreenPointToRay(g.virtualMouse.vMousePosition[1]);
+        Ray screenRay = main.playerCamera.cam.ScreenPointToRay(g.virtualMouse.vMousePosition[1]);
         RaycastHit hit;
-        if (Physics.Raycast(screenRay.origin, screenRay.direction, out hit, aimMaxDistance, g.layerMasks["Player Bullet"]) && ((Quaternion.Inverse(main.cam.transform.rotation) * (hit.point - main.cam.transform.position)).z > aimZCutoff)) {
+        if (Physics.Raycast(screenRay.origin, screenRay.direction, out hit, aimMaxDistance, g.layerMasks["Player Bullet"]) && ((Quaternion.Inverse(main.playerCamera.cam.transform.rotation) * (hit.point - main.playerCamera.cam.transform.position)).z > aimZCutoff)) {
             aimPoint.position = hit.point;
         }
         else {

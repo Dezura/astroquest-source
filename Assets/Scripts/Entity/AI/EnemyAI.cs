@@ -87,9 +87,9 @@ public class EnemyAI : BaseAI
 
     public void AvoidMouse()
     {        
-        if (Vector2.Distance(g.mainCamera.WorldToScreenPoint(transform.position), g.virtualMouse.vMousePosition[1]) <= mouseAvoidanceDistance) { // If near mouse
-            Vector2 dirFromMouse = (((Vector2) g.mainCamera.WorldToScreenPoint(transform.position)) - g.virtualMouse.vMousePosition[1]).normalized; // Calculate direction from the mouse to the enemy relative to screenspace
-            Vector3 moveDir = g.mainCamera.transform.rotation * new Vector3(dirFromMouse.x, dirFromMouse.y, 0); // Convert the direction to a Vector3 in worldspace
+        if (Vector2.Distance(g.playerCamera.cam.WorldToScreenPoint(transform.position), g.virtualMouse.vMousePosition[1]) <= mouseAvoidanceDistance) { // If near mouse
+            Vector2 dirFromMouse = (((Vector2) g.playerCamera.cam.WorldToScreenPoint(transform.position)) - g.virtualMouse.vMousePosition[1]).normalized; // Calculate direction from the mouse to the enemy relative to screenspace
+            Vector3 moveDir = g.playerCamera.cam.transform.rotation * new Vector3(dirFromMouse.x, dirFromMouse.y, 0); // Convert the direction to a Vector3 in worldspace
 
             entity.rigidBody.AddForce(moveDir * speed); // Then move using the new moveDir
         }
@@ -131,6 +131,7 @@ public class EnemyAI : BaseAI
 
     public override void WhileDead()
     {
+        g.playerCamera.ApplyScreenShake(15f);
         Destroy(gameObject);
     }
 

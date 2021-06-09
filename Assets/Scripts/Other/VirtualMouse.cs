@@ -30,7 +30,6 @@ public class VirtualMouse : Utils
         vMouseOffset.Add(Vector2.zero);
     }
 
-
     void Update()
     {
         mouse = Mouse.current;

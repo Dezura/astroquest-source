@@ -39,6 +39,11 @@ public class ShipMovement : Utils
     // Is it unnecessary? Yeah for the most part, but atleast now I can say "Oh I've written code with 4D vectors!" or something
     Vector4 inputVector = Vector4.zero;
 
+    public float cameraBoostZoom = 60f;
+    public float speedBoostAmount = 1.5f;
+    [HideInInspector] public bool boostInput = false;
+    [HideInInspector] public bool isBoosting = false;
+
     Vector3 clampedMoveDir;
 
     void Start()
@@ -84,15 +89,29 @@ public class ShipMovement : Utils
         clampedMoveDir = Vector3.ClampMagnitude(inputVector, 1);
     }
 
+    public void SetBoostInput(InputAction.CallbackContext inputContext)
+    {
+        float input = inputContext.ReadValue<float>();
+
+        if (input == 1) boostInput = true;
+        else if (input == 0) boostInput = false;
+    }
+
     public void HandleMovement()
     {
+        isBoosting = (boostInput && !g.virtualMouse.isAiming && (inputVector.z == 1 && inputVector.x == 0 && inputVector.y == 0));
+
         // Applies basic movement force for x and y, that force then rotated by it's own rotation
         main.entity.rigidBody.AddForce(transform.rotation * (new Vector3(clampedMoveDir.x, clampedMoveDir.y, 0) * moveSpeed * 100f));
 
         // Applies special force to z
         // If moving forward, it rotates velocity by the model rotation instead of it's own rotation
         if (clampedMoveDir.z > 0) {
-            main.entity.rigidBody.AddForce(main.modelTransform.rotation * (new Vector3(0, 0, clampedMoveDir.z) * moveSpeed * 150f));
+            if (isBoosting) { // Handles boosting
+                main.playerCamera.ApplyZoom(cameraBoostZoom);
+                main.entity.rigidBody.AddForce(main.modelTransform.rotation * (new Vector3(0, 0, clampedMoveDir.z) * moveSpeed * 150f * speedBoostAmount));
+            }
+            else main.entity.rigidBody.AddForce(main.modelTransform.rotation * (new Vector3(0, 0, clampedMoveDir.z) * moveSpeed * 150f));
         }
         // Else if moving backwards, it rotates by it's own rotation
         else {
@@ -110,7 +129,8 @@ public class ShipMovement : Utils
     public void UpdateThrusterSpeeds()
     {
         float thrusterMaxMulti = clampedMoveDir.z;
-        if (!g.virtualMouse.isAiming) thrusterMaxMulti += Vector2.ClampMagnitude(g.virtualMouse.vMouseOffset[0], 1).magnitude;
+        if (isBoosting) thrusterMaxMulti *= 1.6f;
+        if (!g.virtualMouse.isAiming) thrusterMaxMulti += Vector2.ClampMagnitude(g.virtualMouse.vMouseOffset[0], 1).magnitude/1.25f;
 
         if (thrusterMaxMulti <= 0.4f) thrusterMaxMulti = 0;
 
