@@ -12,4 +12,6 @@ public class Globals : MonoBehaviour
     public Transform projectileSpawns;
 
     public SerializableDictionaryBase<string, LayerMask> layerMasks;
+
+    public Assets assets;
 }

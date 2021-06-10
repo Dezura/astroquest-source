@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public List<GameObject> enemyList;
+    public List<GameObject> spawningEnemies;
 
     public bool spawnOnStart = false;
 
@@ -16,7 +16,7 @@ public class EnemySpawner : MonoBehaviour
 
     void Start()
     {
-        if (spawnOnStart) Spawn(enemyList[Random.Range(0, enemyList.Count)], transform.position, transform.rotation);
+        if (spawnOnStart) Spawn(spawningEnemies[Random.Range(0, spawningEnemies.Count)], transform.position, transform.rotation);
     }
 
     void Update() 
@@ -38,7 +38,7 @@ public class EnemySpawner : MonoBehaviour
         currentlySpawning = true;
         yield return new WaitForSeconds(spawnTime);
 
-        Spawn(enemyList[Random.Range(0, enemyList.Count)], transform.position, transform.rotation);
+        Spawn(spawningEnemies[Random.Range(0, spawningEnemies.Count)], transform.position, transform.rotation);
 
         currentlySpawning = false;
     }

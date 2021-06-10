@@ -488,7 +488,7 @@ Camera:
     height: 1
   near clip plane: 1
   far clip plane: 2000
-  field of view: 71.06121
+  field of view: 81.187805
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -6756,7 +6756,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4700f9f03ad19f94baf0367cb7a9c988, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Width: 25
+  m_Width: 30
   m_Damping: 1
   m_MinFOV: 1
   m_MaxFOV: 120
@@ -7300,7 +7300,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 1.77}
+  m_AnchoredPosition: {x: 0, y: 2.75}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &730102297
@@ -7446,6 +7446,7 @@ GameObject:
   m_Component:
   - component: {fileID: 826173037}
   - component: {fileID: 826173038}
+  - component: {fileID: 826173039}
   m_Layer: 0
   m_Name: Globals and Other
   m_TagString: Untagged
@@ -7517,6 +7518,235 @@ MonoBehaviour:
       m_Bits: 311
     - serializedVersion: 2
       m_Bits: 119
+  assets: {fileID: 826173039}
+--- !u!114 &826173039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 826173036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6a1d47f95832de47b67b842937a624f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemies:
+    reorderableList:
+      canAdd: 1
+      canRemove: 1
+      draggable: 1
+      expandable: 1
+      multipleSelection: 1
+      isExpanded: 1
+      label:
+        m_Text: Keys
+        m_Image: {fileID: 0}
+        m_Tooltip: 
+      headerHeight: 18
+      footerHeight: 13
+      slideEasing: 0.15
+      verticalSpacing: 2
+      showDefaultBackground: 1
+      elementDisplayType: 0
+      elementNameProperty: 
+      elementNameOverride: 
+      elementIcon: {fileID: 0}
+    reqReferences: {fileID: 0}
+    isExpanded: 1
+    _keyValues:
+    - Helminth
+    - Liberator
+    - Orion
+    - Lancer
+    _keys:
+    - Helminth
+    - Liberator
+    - Orion
+    - Lancer
+    _values:
+    - {fileID: 62626388816812638, guid: 5004c2ee1f1bfc14a8afb97f3848a939, type: 3}
+    - {fileID: 62626388816812638, guid: 0014a569d7ce8414f8a7ec5ee60d216a, type: 3}
+    - {fileID: 62626388816812638, guid: 9fd7ba5e65bbb1949ab442d89e5d23d0, type: 3}
+    - {fileID: 62626388816812638, guid: cf45e9be17ea9cb458b54dfca9c6f7d0, type: 3}
+  projectiles:
+    reorderableList:
+      canAdd: 1
+      canRemove: 1
+      draggable: 1
+      expandable: 1
+      multipleSelection: 1
+      isExpanded: 1
+      label:
+        m_Text: Keys
+        m_Image: {fileID: 0}
+        m_Tooltip: 
+      headerHeight: 18
+      footerHeight: 13
+      slideEasing: 0.15
+      verticalSpacing: 2
+      showDefaultBackground: 1
+      elementDisplayType: 0
+      elementNameProperty: 
+      elementNameOverride: 
+      elementIcon: {fileID: 0}
+    reqReferences: {fileID: 0}
+    isExpanded: 1
+    _keyValues:
+    - Player
+    - Enemy
+    _keys:
+    - Player
+    - Enemy
+    _values:
+    - reorderableList:
+        canAdd: 1
+        canRemove: 1
+        draggable: 1
+        expandable: 1
+        multipleSelection: 1
+        isExpanded: 1
+        label:
+          m_Text: Keys
+          m_Image: {fileID: 0}
+          m_Tooltip: 
+        headerHeight: 18
+        footerHeight: 13
+        slideEasing: 0.15
+        verticalSpacing: 2
+        showDefaultBackground: 1
+        elementDisplayType: 0
+        elementNameProperty: 
+        elementNameOverride: 
+        elementIcon: {fileID: 0}
+      reqReferences: {fileID: 0}
+      isExpanded: 1
+      _keyValues:
+      - Basic Bullet
+      _keys:
+      - Basic Bullet
+      _values:
+      - {fileID: 837018278965622188, guid: 102158112ad946d4a827ba7e070b4400, type: 3}
+    - reorderableList:
+        canAdd: 1
+        canRemove: 1
+        draggable: 1
+        expandable: 1
+        multipleSelection: 1
+        isExpanded: 1
+        label:
+          m_Text: Keys
+          m_Image: {fileID: 0}
+          m_Tooltip: 
+        headerHeight: 18
+        footerHeight: 13
+        slideEasing: 0.15
+        verticalSpacing: 2
+        showDefaultBackground: 1
+        elementDisplayType: 0
+        elementNameProperty: 
+        elementNameOverride: 
+        elementIcon: {fileID: 0}
+      reqReferences: {fileID: 0}
+      isExpanded: 1
+      _keyValues:
+      - Basic Bullet
+      _keys:
+      - Basic Bullet
+      _values:
+      - {fileID: 837018278965622188, guid: 27d7ae5310753994d9624bf15b184c00, type: 3}
+  gunModels:
+    reorderableList:
+      canAdd: 1
+      canRemove: 1
+      draggable: 1
+      expandable: 1
+      multipleSelection: 1
+      isExpanded: 1
+      label:
+        m_Text: Keys
+        m_Image: {fileID: 0}
+        m_Tooltip: 
+      headerHeight: 18
+      footerHeight: 13
+      slideEasing: 0.15
+      verticalSpacing: 2
+      showDefaultBackground: 1
+      elementDisplayType: 0
+      elementNameProperty: 
+      elementNameOverride: 
+      elementIcon: {fileID: 0}
+    reqReferences: {fileID: 0}
+    isExpanded: 1
+    _keyValues:
+    - Player
+    - Enemy
+    _keys:
+    - Player
+    - Enemy
+    _values:
+    - reorderableList:
+        canAdd: 1
+        canRemove: 1
+        draggable: 1
+        expandable: 1
+        multipleSelection: 1
+        isExpanded: 1
+        label:
+          m_Text: Keys
+          m_Image: {fileID: 0}
+          m_Tooltip: 
+        headerHeight: 18
+        footerHeight: 13
+        slideEasing: 0.15
+        verticalSpacing: 2
+        showDefaultBackground: 1
+        elementDisplayType: 0
+        elementNameProperty: 
+        elementNameOverride: 
+        elementIcon: {fileID: 0}
+      reqReferences: {fileID: 0}
+      isExpanded: 1
+      _keyValues:
+      - Blaster
+      - Chaingun
+      _keys:
+      - Blaster
+      - Chaingun
+      _values:
+      - {fileID: 919132149155446097, guid: 0ba9913613cca7b448cda969ecb8c891, type: 3}
+      - {fileID: 919132149155446097, guid: 9464f79883d6b5b48937f1f9f91bc11b, type: 3}
+    - reorderableList:
+        canAdd: 1
+        canRemove: 1
+        draggable: 1
+        expandable: 1
+        multipleSelection: 1
+        isExpanded: 1
+        label:
+          m_Text: Keys
+          m_Image: {fileID: 0}
+          m_Tooltip: 
+        headerHeight: 18
+        footerHeight: 13
+        slideEasing: 0.15
+        verticalSpacing: 2
+        showDefaultBackground: 1
+        elementDisplayType: 0
+        elementNameProperty: 
+        elementNameOverride: 
+        elementIcon: {fileID: 0}
+      reqReferences: {fileID: 0}
+      isExpanded: 1
+      _keyValues:
+      - Blaster
+      - Chaingun
+      _keys:
+      - Blaster
+      - Chaingun
+      _values:
+      - {fileID: 919132149155446097, guid: 1aedd452a2a34154997bce8d784f49f1, type: 3}
+      - {fileID: 919132149155446097, guid: 60ca50925d01d894283ea8e9c3b7663e, type: 3}
 --- !u!1 &834682910
 GameObject:
   m_ObjectHideFlags: 0
@@ -15247,13 +15477,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4c09670e326dd34689e4e3985767ca7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyList:
+  spawningEnemies:
   - {fileID: 62626388816812638, guid: 5004c2ee1f1bfc14a8afb97f3848a939, type: 3}
+  - {fileID: 62626388816812638, guid: cf45e9be17ea9cb458b54dfca9c6f7d0, type: 3}
   - {fileID: 62626388816812638, guid: 0014a569d7ce8414f8a7ec5ee60d216a, type: 3}
   - {fileID: 62626388816812638, guid: 9fd7ba5e65bbb1949ab442d89e5d23d0, type: 3}
-  - {fileID: 62626388816812638, guid: cf45e9be17ea9cb458b54dfca9c6f7d0, type: 3}
-  spawnOnStart: 0
-  spawnTime: 5
+  spawnOnStart: 1
+  spawnTime: 10
   maxEnemyCount: 3
   currentlySpawning: 0
 --- !u!1 &1789567872
@@ -21551,7 +21781,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   g: {fileID: 0}
-  moveSpeed: 50
+  moveSpeed: 475
   rollSpeed: 50
   rollAmount: 100
   thrusterRoot: {fileID: 1187214713}

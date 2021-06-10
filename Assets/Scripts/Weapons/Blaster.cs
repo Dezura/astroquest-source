@@ -11,8 +11,8 @@ public class Blaster : BaseGun
 
     public override void Init()
     {
-        bulletPrefab = (GameObject) AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Projectiles/" + gameObject.tag + "/Basic Bullet.prefab", typeof(GameObject));
-        gunModelPrefab = (GameObject) AssetDatabase.LoadAssetAtPath("Assets/Models/Weapons/" + gameObject.tag + "/Blaster.fbx", typeof(GameObject));
+        bulletPrefab = g.assets.projectiles[gameObject.tag]["Basic Bullet"];
+        gunModelPrefab = g.assets.gunModels[gameObject.tag]["Blaster"];
 
         bulletMask = g.layerMasks[gameObject.tag + " Bullet"];
 
@@ -28,6 +28,8 @@ public class Blaster : BaseGun
             newModel.transform.localPosition = Vector3.zero;
             newModel.transform.localRotation = Quaternion.Euler(0, 0, 0);
         }
+
+        firerate *= gunManager.gunPoints.Count;
     }
 
     public override void OnShoot()
@@ -41,7 +43,6 @@ public class Blaster : BaseGun
         currentShootPoint += 1;
         if (currentShootPoint >= shootPoints.Count) currentShootPoint = 0;
 
-        canShoot = false;
         StartCoroutine("FirerateRefresh");
     }
 

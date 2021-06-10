@@ -15,7 +15,7 @@ public class BaseGun : Utils
 
     [Header("Gun Stats (Some stats may not be applicable to every gun type)")]
     public bool autofire = false;
-    public float firerate = 60f;
+    public float firerate = 40f;
     public float multishot = 1f;
     public float accuracy = 0.1f;
 
@@ -41,6 +41,7 @@ public class BaseGun : Utils
 
     private IEnumerator FirerateRefresh()
     {
+        canShoot = false;
         yield return new WaitForSeconds(10f/firerate);
         canShoot = true;
     }

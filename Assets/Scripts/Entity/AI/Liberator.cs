@@ -13,38 +13,16 @@ public class Liberator : EnemyAI
     public override void UpdateAI()
     {
         transform.LookAt(target, target.up);
-
         gunManager.AimGunPoints(g.playerShip.transform.position, transform.up);
+
+        if (currentDetection != "None") gunManager.Shoot();
     }
 
-    public override void WhileOutOfRange()
+    public override void FixedUpdateAI()
     {
-        MoveTowards(target.position);
-    }
+        if (currentDetection != "Close") MoveTowards(target.position);
 
-    public override void WhileInAttackRange()
-    {
-        AvoidMouse();
-
-        MoveTowards(target.position);
-        
-        gunManager.Shoot();
-
-        AvoidNearbyContactFrom("Enemy");
-    }
-
-    public override void WhileInCloseRange()
-    {
-        AvoidMouse();
-
-        gunManager.Shoot();
-
-        AvoidNearbyContactFrom("Enemy");
-        AvoidNearbyContactFrom("Player");
-    }
-
-    public override void WhileDead() 
-    {
-        base.WhileDead();
+        if (currentDetection != "None") {AvoidNearbyContactFrom("Enemy"); AvoidMouse();}
+        if (currentDetection == "Close") AvoidNearbyContactFrom("Player");
     }
 }

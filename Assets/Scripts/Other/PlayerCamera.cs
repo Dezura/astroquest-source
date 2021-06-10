@@ -45,8 +45,8 @@ public class PlayerCamera : Utils
 
     bool ReducedShake() // This design is very weird, but the WaitUntil in the ReduceShakeCoroutine() demands this type of design
     {
-        cameraShake.m_AmplitudeGain = Mathf.Lerp(cameraShake.m_AmplitudeGain, 0, 0.005f);
-        cameraShake.m_FrequencyGain = Mathf.Lerp(cameraShake.m_FrequencyGain, 0, 0.005f);
+        cameraShake.m_AmplitudeGain = Mathf.Lerp(cameraShake.m_AmplitudeGain, 0, 0.025f);
+        cameraShake.m_FrequencyGain = Mathf.Lerp(cameraShake.m_FrequencyGain, 0, 0.025f);
 
         if (cameraShake.m_AmplitudeGain == 0 && cameraShake.m_FrequencyGain == 0) return true;
 

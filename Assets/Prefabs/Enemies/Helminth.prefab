@@ -54,7 +54,7 @@ MonoBehaviour:
   entity: {fileID: 0}
   gunManager: {fileID: 9092048389767706778}
   startingGun: Blaster
-  speed: 300
+  speed: 350
   contactDamage: 500
   detectionArea: {fileID: 2922412913825365689}
   closeDetectionArea: {fileID: 3394775102189200334}
@@ -64,6 +64,7 @@ MonoBehaviour:
   playerAvoidanceDistance: 20
   enemyAvoidanceDistance: 20
   mouseAvoidanceDistance: 250
+  currentDetection: None
 --- !u!114 &8231597319636034632
 MonoBehaviour:
   m_ObjectHideFlags: 0

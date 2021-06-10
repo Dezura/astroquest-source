@@ -26,8 +26,6 @@ public class BaseAI : Utils
 
     void FixedUpdate()
     {
-        if (entity.isDead) {WhileDead(); return;}
-
         FixedUpdateAI();
     }
 

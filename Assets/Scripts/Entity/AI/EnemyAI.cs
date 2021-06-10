@@ -25,6 +25,8 @@ public class EnemyAI : BaseAI
     [HideInInspector] public float enemyAvoidanceDistance = 20f;
     [HideInInspector] public float mouseAvoidanceDistance = 500f;
 
+    [HideInInspector] public string currentDetection = "None"; // None; Far; Close;
+
     Dictionary<string, float> thrustersSpeed = new Dictionary<string, float>
     {
         {"max", 100f},
@@ -51,20 +53,25 @@ public class EnemyAI : BaseAI
 
         distanceFromTarget = Vector3.Distance(transform.position, target.position);
 
-        if (closeDetectionArea.overlappingEntities.Contains(g.playerShip.entity)) {WhileInCloseRange();}
-        else if (detectionArea.overlappingEntities.Contains(g.playerShip.entity)) {WhileInAttackRange();}
-        else {WhileOutOfRange();}
-
         UpdateAI();
         UpdateThrusters();
 
         // TODO: Add healthbar
     }
 
+    void FixedUpdate() 
+    {
+        if (closeDetectionArea.overlappingEntities.Contains(g.playerShip.entity)) currentDetection = "Close";
+        else if (detectionArea.overlappingEntities.Contains(g.playerShip.entity)) currentDetection = "Far";
+        else currentDetection = "None";
+
+        FixedUpdateAI();
+    }
+
     public void MoveTowards(Vector3 position)
     {
         AddThrusterForce();
-        entity.rigidBody.AddForce((position - transform.position).normalized * speed);
+        entity.rigidBody.AddForce((position - transform.position).normalized * speed * 12);
     }
 
     public void AddThrusterForce()
@@ -91,7 +98,7 @@ public class EnemyAI : BaseAI
             Vector2 dirFromMouse = (((Vector2) g.playerCamera.cam.WorldToScreenPoint(transform.position)) - g.virtualMouse.vMousePosition[1]).normalized; // Calculate direction from the mouse to the enemy relative to screenspace
             Vector3 moveDir = g.playerCamera.cam.transform.rotation * new Vector3(dirFromMouse.x, dirFromMouse.y, 0); // Convert the direction to a Vector3 in worldspace
 
-            entity.rigidBody.AddForce(moveDir * speed); // Then move using the new moveDir
+            entity.rigidBody.AddForce(moveDir * speed * 12); // Then move using the new moveDir
         }
     }
 
@@ -106,7 +113,7 @@ public class EnemyAI : BaseAI
                 if (Vector3.Distance(transform.position, enemy.transform.position) <= enemyAvoidanceDistance) {
                     Vector3 moveDir = (transform.position - enemy.transform.position).normalized;
 
-                    entity.rigidBody.AddForce(moveDir * speed);
+                    entity.rigidBody.AddForce(moveDir * speed * 12);
                 }
             }
 
@@ -114,7 +121,7 @@ public class EnemyAI : BaseAI
                 if (Vector3.Distance(transform.position, playerShip.transform.position) <= playerAvoidanceDistance) {
                     Vector3 moveDir = (transform.position - playerShip.transform.position).normalized;
 
-                    entity.rigidBody.AddForce(moveDir * speed);
+                    entity.rigidBody.AddForce(moveDir * speed * 12);
                 }
             }
         }
@@ -138,10 +145,4 @@ public class EnemyAI : BaseAI
     // Override these functions in ai scripts as needed
 
     public virtual void Init() {}
-
-    public virtual void WhileOutOfRange() {}
-
-    public virtual void WhileInAttackRange() {}
-
-    public virtual void WhileInCloseRange() {}
 }

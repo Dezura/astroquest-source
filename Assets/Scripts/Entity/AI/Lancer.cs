@@ -19,29 +19,16 @@ public class Lancer : EnemyAI
     public override void UpdateAI()
     {
         transform.LookAt(target, target.up);
-
         gunManager.AimGunPoints(g.playerShip.transform.position, transform.up);
 
+        if (currentDetection != "None") gunManager.Shoot();
+    }
+
+    public override void FixedUpdateAI()
+    {
         MoveTowards(target.position + randomizedFollowOffset);
-    }
 
-    public override void WhileInAttackRange()
-    {
-        gunManager.Shoot();
-
-        AvoidNearbyContactFrom("Enemy");
-    }
-
-    public override void WhileInCloseRange()
-    {
-        gunManager.Shoot();
-
-        AvoidNearbyContactFrom("Enemy");
-    }
-
-    public override void WhileDead() 
-    {
-        base.WhileDead();
+        if (currentDetection != "None") AvoidNearbyContactFrom("Enemy");
     }
 
     private IEnumerator RandomizeFollowOffset()
