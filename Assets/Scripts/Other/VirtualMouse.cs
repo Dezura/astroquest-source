@@ -72,7 +72,9 @@ public class VirtualMouse : Utils
     {
         if (Application.isFocused) {
             Cursor.visible = false;
-
+            if (!PointWithinBoundExtents(mousePos, new Vector2(Screen.width/2f, Screen.height/2f), 350, 350)) {
+                ResetCursorPosition();
+            }
             virtualMouseTransform[1].position += (Vector3) mouseMoveDelta * (mouseSensitivity/100f);
 
             resettedOnFocus = false;

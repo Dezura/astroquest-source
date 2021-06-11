@@ -11,6 +11,8 @@ public class Lancer : EnemyAI
 
     public override void Init()
     {
+        base.Init();
+
         enemyAvoidanceDistance = 45f;
 
         StartCoroutine("RandomizeFollowOffset");
@@ -18,6 +20,8 @@ public class Lancer : EnemyAI
 
     public override void UpdateAI()
     {
+        base.UpdateAI();
+
         transform.LookAt(target, target.up);
         gunManager.AimGunPoints(g.playerShip.transform.position, transform.up);
 
@@ -26,6 +30,8 @@ public class Lancer : EnemyAI
 
     public override void FixedUpdateAI()
     {
+        base.FixedUpdateAI();
+
         MoveTowards(target.position + randomizedFollowOffset);
 
         if (currentDetection != "None") AvoidNearbyContactFrom("Enemy");

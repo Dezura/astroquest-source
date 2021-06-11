@@ -16,8 +16,10 @@ public class GunManager : Utils
         GetGlobals();
     }
 
-    public void SetCurrentGun(string gunName)
+    public void SetCurrentGun(string gunName, string projectileName)
     {
+        if (!g) GetGlobals(); // If globals isn't retrieved yet, get it
+
         switch (gunName)
         {
             case "Blaster":
@@ -25,20 +27,28 @@ public class GunManager : Utils
 
                 currentGun = transform.GetChild(0).gameObject.AddComponent<Blaster>();
                 currentGun.gunManager = this;
-                currentGun.tag = gameObject.tag;
+                currentGun.tag = tag;
 
                 break;
             
             case "Chaingun": // TODO: Implement these gun types
+                if (currentGun) RemoveCurrentGun();
+
+                currentGun = transform.GetChild(0).gameObject.AddComponent<Chaingun>();
+                currentGun.gunManager = this;
+                currentGun.tag = tag;
                 break;
             
             case "Shotgun":
                 break;
 
             default:
+                Debug.LogError("Invalid Weapon Given!");
+
                 break;
         }
         
+        currentGun.bulletPrefab = g.assets.projectiles[tag][projectileName];
     }
 
     public void Shoot()

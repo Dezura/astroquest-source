@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 
 public class Blaster : BaseGun
 {
@@ -11,25 +10,27 @@ public class Blaster : BaseGun
 
     public override void Init()
     {
-        bulletPrefab = g.assets.projectiles[gameObject.tag]["Basic Bullet"];
-        gunModelPrefab = g.assets.gunModels[gameObject.tag]["Blaster"];
+        base.Init();
 
-        bulletMask = g.layerMasks[gameObject.tag + " Bullet"];
+        bulletPrefab = g.assets.projectiles[tag]["Basic Bullet"];
+        gunModelPrefab = g.assets.gunModels[tag]["Blaster"];
 
-        foreach (Transform point in gunManager.gunPoints)
+        bulletMask = g.layerMasks[tag + " Projectile"];
+
+        foreach (Transform gunPoint in gunManager.gunPoints)
         {
             GameObject newModel = Instantiate(gunModelPrefab);
-            newModel.transform.parent = point;
-            newModel.tag = gameObject.tag;
+            newModel.transform.parent = gunPoint;
+            newModel.tag = tag;
 
-            shootPoints.Add(point);
+            gunModels.Add(newModel);
+            newModel.transform.GetChild(0).rotation = Quaternion.Euler(180, 0, 0);
+            shootPoints.Add(newModel.transform.GetChild(0));
             
-            newModel.transform.localScale = Vector3.Scale(newModel.transform.localScale, point.localScale);
+            newModel.transform.localScale = Vector3.Scale(newModel.transform.localScale, gunPoint.localScale);
             newModel.transform.localPosition = Vector3.zero;
             newModel.transform.localRotation = Quaternion.Euler(0, 0, 0);
         }
-
-        firerate *= gunManager.gunPoints.Count;
     }
 
     public override void OnShoot()
@@ -38,7 +39,7 @@ public class Blaster : BaseGun
 
         if (!canShoot) return;
 
-        SpawnBullet(shootPoints[currentShootPoint].position, shootPoints[currentShootPoint].rotation * Quaternion.Inverse(Quaternion.Euler(-90, 0, 0)));
+        SpawnBullet(shootPoints[currentShootPoint].position, shootPoints[currentShootPoint].rotation);
 
         currentShootPoint += 1;
         if (currentShootPoint >= shootPoints.Count) currentShootPoint = 0;
@@ -48,8 +49,11 @@ public class Blaster : BaseGun
 
     public override void FixStats()
     {
+        firerate *= gunManager.gunPoints.Count;
+
+        autofire = true;
         firerate *= 1.5f;
         damage *= 1.25f;
-        projectileSize += 1f;
+        projectileSize += 0.2f;
     }
 }

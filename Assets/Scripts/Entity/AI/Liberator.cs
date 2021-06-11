@@ -6,12 +6,16 @@ public class Liberator : EnemyAI
 {
     public override void Init()
     {
+        base.Init();
+
         playerAvoidanceDistance = 45f;
         enemyAvoidanceDistance = 45f;
     }
 
     public override void UpdateAI()
     {
+        base.UpdateAI();
+
         transform.LookAt(target, target.up);
         gunManager.AimGunPoints(g.playerShip.transform.position, transform.up);
 
@@ -20,6 +24,8 @@ public class Liberator : EnemyAI
 
     public override void FixedUpdateAI()
     {
+        base.FixedUpdateAI();
+
         if (currentDetection != "Close") MoveTowards(target.position);
 
         if (currentDetection != "None") {AvoidNearbyContactFrom("Enemy"); AvoidMouse();}

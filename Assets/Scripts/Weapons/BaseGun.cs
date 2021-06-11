@@ -11,7 +11,7 @@ public class BaseGun : Utils
     public GameObject bulletPrefab;
     public GameObject gunModelPrefab;
 
-    public List<GameObject> gunModels;
+    public List<GameObject> gunModels = new List<GameObject>();
 
     [Header("Gun Stats (Some stats may not be applicable to every gun type)")]
     public bool autofire = false;
@@ -30,14 +30,7 @@ public class BaseGun : Utils
     
     void Awake() {} // This overrides the Awake() in Utils
 
-    void Start()
-    {
-        GetGlobals();
-
-        Init();
-        
-        FixStats();
-    }
+    void Start() {Init();}
 
     private IEnumerator FirerateRefresh()
     {
@@ -49,15 +42,13 @@ public class BaseGun : Utils
     public void SpawnBullet(Vector3 position, Quaternion rotation)
     {
         // TODO: Rework bullets with a base system
-        var projectile = Instantiate(bulletPrefab, position, rotation).GetComponent<BasicBullet>();
+        var projectile = Instantiate(bulletPrefab, position, rotation).GetComponent<Projectile>();
 
         projectile.transform.SetParent(g.projectileSpawns);
         
         // Made a temp variable as I can't directly use Scale() on the transform, for some reason
         Vector3 newScale = projectile.transform.localScale; newScale.Scale(Vector3.one * projectileSize); 
         projectile.transform.localScale = newScale;
-
-        projectile.transform.localPosition -= projectile.transform.rotation * new Vector3(0, projectile.GetComponent<CapsuleCollider>().height * projectile.transform.localScale.y / 2f, 0);
         
         projectile.damage = damage;
         projectile.speed = projectileSpeed;
@@ -68,7 +59,12 @@ public class BaseGun : Utils
 
     // Override these functions in ai scripts as needed
 
-    public virtual void Init() {}
+    public virtual void Init() 
+    {
+        GetGlobals();
+        
+        FixStats();
+    }
 
     public virtual void OnShoot() {}
 

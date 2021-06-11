@@ -5,6 +5,9 @@ using UnityEngine.InputSystem;
 
 public class ShipMain : BaseAI
 {
+    public string startingGun;
+    public string startingProjectile;
+
     public PlayerCamera playerCamera;
 
     public Transform modelTransform;
@@ -27,7 +30,7 @@ public class ShipMain : BaseAI
 
         gunManager = GetComponentInChildren<GunManager>();
 
-        gunManager.SetCurrentGun("Blaster");
+        gunManager.SetCurrentGun(startingGun, startingProjectile);
         gunManager.AimGunPoints(shipLook.aimPoint.position, modelTransform.up, true);
 
         gunManager.currentGun.damage *= 1.5f;
@@ -38,6 +41,8 @@ public class ShipMain : BaseAI
 
     public override void UpdateAI()
     {
+        base.UpdateAI();
+
         CheckMouseClick(Mouse.current);
 
         shipMovement.UpdateThrusterSpeeds();
@@ -45,6 +50,8 @@ public class ShipMain : BaseAI
 
     public override void FixedUpdateAI()
     {
+        base.FixedUpdateAI();
+
         shipLook.UpdateCameraPoints(); // Sets positions of camera points, then the camera automatically updates its position based on the points
         shipLook.UpdateMovePoint();
         shipLook.UpdateAimPoint();
@@ -60,7 +67,15 @@ public class ShipMain : BaseAI
     public override void AfterHit(GameObject hitSource, float damage, float forceApplied = 0, Vector3? hitPosition = null)
     {
         base.AfterHit(hitSource, damage, forceApplied, hitPosition);
+        
         playerCamera.ApplyScreenShake(0.5f);
+    }
+
+    public override void OnDeath(GameObject hitSource)
+    {
+        base.OnDeath(hitSource);
+
+        Debug.Log("You were killed by " + hitSource.name);
     }
 
     public void CheckMouseClick(Mouse mouse)
@@ -100,10 +115,5 @@ public class ShipMain : BaseAI
             entity.rigidBody.AddExplosionForce(contactKnockback * 1000, averagedHitPoint, 1f);
             playerCamera.ApplyScreenShake(10f);
         }
-    }
-
-    public override void OnDeath(GameObject hitSource)
-    {
-        Debug.Log("You were killed by " + hitSource.name);
     }
 }

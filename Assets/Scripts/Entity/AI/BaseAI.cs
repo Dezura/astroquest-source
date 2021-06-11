@@ -17,17 +17,30 @@ public class BaseAI : Utils
         entity = GetComponent<Entity>();
     }
 
-    void Update()
-    {
-        if (entity.isDead) {WhileDead(); return;}
+    void Update() {if (entity.isDead) WhileDead(); else UpdateAI();}
 
-        UpdateAI();
+    void FixedUpdate() {if (entity.isDead) WhileDead(); else FixedUpdateAI();}
+
+
+
+    // Override these functions in ai scripts as needed
+
+    public virtual void UpdateAI() {}
+
+    public virtual void FixedUpdateAI() {}
+
+    public virtual void AfterHit(GameObject hitSource, float damage, float forceApplied = 0, Vector3? hitPosition = null) // Do not use this directly to apply damage 
+    {
+        HitFlash();
     }
 
-    void FixedUpdate()
-    {
-        FixedUpdateAI();
-    }
+    public virtual void OnDeath(GameObject hitSource) {} // Keep init type stuff on death here, don't destroy to follow design
+
+    public virtual void WhileDead() {} // Keep ongoing and destroy logic here
+
+
+
+    // Extra helper/other type functions
 
     private IEnumerator RevertFlashAfter(float seconds)
     {
@@ -59,19 +72,4 @@ public class BaseAI : Utils
 
         StartCoroutine("RevertFlashAfter", 0.075f);
     }
-
-    // Override these functions in ai scripts as needed
-
-    public virtual void UpdateAI() {}
-
-    public virtual void FixedUpdateAI() {}
-
-    public virtual void AfterHit(GameObject hitSource, float damage, float forceApplied = 0, Vector3? hitPosition = null) // Do not use this directly to apply damage 
-    {
-        HitFlash();
-    }
-
-    public virtual void OnDeath(GameObject hitSource) {} // Keep init type stuff on death here, don't destroy to follow design
-
-    public virtual void WhileDead() {} // Keep ongoing and destroy logic here
 }

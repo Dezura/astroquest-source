@@ -9,19 +9,19 @@ namespace RotaryHeart.Lib.SerializableDictionary
         const string ASSET_NAME = "Serializable Dictionary Lite";
         const string VERSION = "2.6.9.4";
 
-        protected override string SupportForum
+        public override string SupportForum
         {
             get { return SUPPORT_FORUM; }
         }
-        protected override string StoreLink
+        public override string StoreLink
         {
             get { return STORE_LINK; }
         }
-        protected override string AssetName
+        public override string AssetName
         {
             get { return ASSET_NAME; }
         }
-        protected override string Version
+        public override string Version
         {
             get { return VERSION; }
         }

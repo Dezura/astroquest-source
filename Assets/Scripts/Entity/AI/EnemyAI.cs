@@ -7,6 +7,7 @@ public class EnemyAI : BaseAI
     public GunManager gunManager;
 
     public string startingGun;
+    public string startingProjectile;
 
     public float speed = 300f;
 
@@ -16,6 +17,8 @@ public class EnemyAI : BaseAI
     public DetectionArea closeDetectionArea;
 
     public GameObject thrusterRoot;
+
+    public ParticleSystem destroyExplosion;
 
     [HideInInspector] public float distanceFromTarget;
 
@@ -34,7 +37,13 @@ public class EnemyAI : BaseAI
         {"current", 0f}
     };
 
-    void Start()
+    void Start() {Init();}
+
+
+
+    // Override these functions in ai scripts as needed
+
+    public virtual void Init() 
     {
         GetGlobals();
 
@@ -42,31 +51,56 @@ public class EnemyAI : BaseAI
 
         target = g.playerShip.transform;
 
-        gunManager.SetCurrentGun(startingGun);
+        gunManager.SetCurrentGun(startingGun, startingProjectile);
         gunManager.AimGunPoints(g.playerShip.transform.position, transform.up, true);
-        Init();
     }
 
-    void Update() // Overriding this instead of using UpdateAI() to make it simpler when writing enemy AI
+    public override void UpdateAI()
     {
-        if (entity.isDead) {WhileDead(); return;}
+        base.UpdateAI();
 
         distanceFromTarget = Vector3.Distance(transform.position, target.position);
 
-        UpdateAI();
         UpdateThrusters();
 
         // TODO: Add healthbar
     }
 
-    void FixedUpdate() 
+    public override void FixedUpdateAI()
     {
+        base.FixedUpdateAI();
+
         if (closeDetectionArea.overlappingEntities.Contains(g.playerShip.entity)) currentDetection = "Close";
         else if (detectionArea.overlappingEntities.Contains(g.playerShip.entity)) currentDetection = "Far";
         else currentDetection = "None";
-
-        FixedUpdateAI();
     }
+
+    public override void OnDeath(GameObject hitSource)
+    {
+        base.OnDeath(hitSource);
+
+        destroyExplosion.Play();
+        destroyExplosion.GetComponent<Light>().enabled = true;
+
+        foreach (MeshRenderer mesh in GetComponentsInChildren<MeshRenderer>()) Destroy(mesh);
+        Destroy(GetComponentInChildren<MeshCollider>());
+        Destroy(GetComponent<Rigidbody>());
+
+        g.playerCamera.ApplyScreenShake(15f);
+
+        // TODO: Give points to score on death
+    }
+
+    public override void WhileDead()
+    {
+        base.WhileDead();
+
+        if (!destroyExplosion.isPlaying) Destroy(gameObject);
+    }
+
+
+
+    // Extra helper/other type functions
 
     public void MoveTowards(Vector3 position)
     {
@@ -126,23 +160,4 @@ public class EnemyAI : BaseAI
             }
         }
     }
-
-    public override void OnDeath(GameObject hitSource)
-    {
-        base.OnDeath(hitSource);
-
-        // TODO: Add explosion and random flying scrap
-        // TODO: Add screenshake on death
-        // TODO: Give points to score on death
-    }
-
-    public override void WhileDead()
-    {
-        g.playerCamera.ApplyScreenShake(15f);
-        Destroy(gameObject);
-    }
-
-    // Override these functions in ai scripts as needed
-
-    public virtual void Init() {}
 }

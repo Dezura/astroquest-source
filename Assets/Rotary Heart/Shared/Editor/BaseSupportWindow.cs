@@ -19,24 +19,24 @@ namespace RotaryHeart.Lib
         GUIStyle m_reviewBanner;
         GUIStyle m_versionLabel;
 
-        protected virtual string AssetName
+        public virtual string AssetName
         {
             get { return null; }
         }
-        protected virtual string SupportForum
+        public virtual string SupportForum
         {
             get { return null; }
         }
-        protected virtual string StoreLink
+        public virtual string StoreLink
         {
             get { return null; }
         }
-        protected virtual string Version
+        public virtual string Version
         {
             get { return null; }
         }
 
-        protected static void ShowWindow <T> () where T : BaseSupportWindow
+        public static void ShowWindow <T> () where T : BaseSupportWindow
         {
             T myWindow = CreateInstance<T>();
             myWindow.ShowUtility();

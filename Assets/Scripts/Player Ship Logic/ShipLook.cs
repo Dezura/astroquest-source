@@ -80,7 +80,7 @@ public class ShipLook : Utils
     {
         Ray screenRay = main.playerCamera.cam.ScreenPointToRay(g.virtualMouse.vMousePosition[0]);
         RaycastHit hit;
-        if (Physics.Raycast(screenRay.origin, screenRay.direction, out hit, aimMaxDistance, g.layerMasks["Player Bullet"]) && ((Quaternion.Inverse(main.playerCamera.cam.transform.rotation) * (hit.point - main.playerCamera.cam.transform.position)).z > aimZCutoff)) {
+        if (Physics.Raycast(screenRay.origin, screenRay.direction, out hit, aimMaxDistance, g.layerMasks["Player Projectile"]) && ((Quaternion.Inverse(main.playerCamera.cam.transform.rotation) * (hit.point - main.playerCamera.cam.transform.position)).z > aimZCutoff)) {
             movePoint.position = hit.point;
         }
         else {
@@ -92,7 +92,7 @@ public class ShipLook : Utils
     {
         Ray screenRay = main.playerCamera.cam.ScreenPointToRay(g.virtualMouse.vMousePosition[1]);
         RaycastHit hit;
-        if (Physics.Raycast(screenRay.origin, screenRay.direction, out hit, aimMaxDistance, g.layerMasks["Player Bullet"]) && ((Quaternion.Inverse(main.playerCamera.cam.transform.rotation) * (hit.point - main.playerCamera.cam.transform.position)).z > aimZCutoff)) {
+        if (Physics.Raycast(screenRay.origin, screenRay.direction, out hit, aimMaxDistance, g.layerMasks["Player Projectile"]) && ((Quaternion.Inverse(main.playerCamera.cam.transform.rotation) * (hit.point - main.playerCamera.cam.transform.position)).z > aimZCutoff)) {
             aimPoint.position = hit.point;
         }
         else {
