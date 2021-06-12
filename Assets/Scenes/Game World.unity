@@ -486,7 +486,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 1
+  near clip plane: 1.25
   far clip plane: 2000
   field of view: 81.187805
   orthographic: 0
@@ -6732,7 +6732,7 @@ MonoBehaviour:
   m_Lens:
     FieldOfView: 70
     OrthographicSize: 5
-    NearClipPlane: 1
+    NearClipPlane: 1.25
     FarClipPlane: 2000
     Dutch: 0
     LensShift: {x: 0, y: 0}
@@ -7483,7 +7483,8 @@ MonoBehaviour:
   playerShip: {fileID: 919132147543875721}
   virtualMouse: {fileID: 352461300}
   playerCamera: {fileID: 1131739337}
-  projectileSpawns: {fileID: 2137361290}
+  enemySpawn: {fileID: 1737101956}
+  projectileSpawn: {fileID: 2137361290}
   layerMasks:
     reorderableList:
       canAdd: 1
@@ -7623,10 +7624,19 @@ MonoBehaviour:
       isExpanded: 1
       _keyValues:
       - Basic Bullet
+      - Piercing Bullet
+      - Homing Missile
+      - Ricocheting Disc
       _keys:
       - Basic Bullet
+      - Piercing Bullet
+      - Homing Missile
+      - Ricocheting Disc
       _values:
       - {fileID: 837018278965622188, guid: 102158112ad946d4a827ba7e070b4400, type: 3}
+      - {fileID: 837018278965622188, guid: 42094d48a3f0b1c4e910e87b16b83b5d, type: 3}
+      - {fileID: 837018278965622188, guid: 107641150b7dc2a4baaf955d0cc26b01, type: 3}
+      - {fileID: 837018278965622188, guid: 6bd0e1b7a60e0f343bef3d733a0c9ca6, type: 3}
     - reorderableList:
         canAdd: 1
         canRemove: 1
@@ -7651,10 +7661,19 @@ MonoBehaviour:
       isExpanded: 1
       _keyValues:
       - Basic Bullet
+      - Piercing Bullet
+      - Homing Missile
+      - Ricocheting Disc
       _keys:
       - Basic Bullet
+      - Piercing Bullet
+      - Homing Missile
+      - Ricocheting Disc
       _values:
       - {fileID: 837018278965622188, guid: 27d7ae5310753994d9624bf15b184c00, type: 3}
+      - {fileID: 837018278965622188, guid: 2381790b143a46640a59b3b657716b9c, type: 3}
+      - {fileID: 837018278965622188, guid: 0fa1424bbf3829442a01d5de7d5d168c, type: 3}
+      - {fileID: 837018278965622188, guid: cf81106039f333e45b407ca05be35180, type: 3}
   gunModels:
     reorderableList:
       canAdd: 1
@@ -21747,7 +21766,7 @@ MonoBehaviour:
   g: {fileID: 0}
   entity: {fileID: 0}
   startingGun: Chaingun
-  startingProjectile: Basic Bullet
+  startingProjectile: Homing Missile
   playerCamera: {fileID: 1131739337}
   modelTransform: {fileID: 2117437204}
   contactKnockback: 40

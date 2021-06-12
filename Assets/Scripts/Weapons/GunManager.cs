@@ -31,7 +31,7 @@ public class GunManager : Utils
 
                 break;
             
-            case "Chaingun": // TODO: Implement these gun types
+            case "Chaingun":
                 if (currentGun) RemoveCurrentGun();
 
                 currentGun = transform.GetChild(0).gameObject.AddComponent<Chaingun>();

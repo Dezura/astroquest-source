@@ -10,7 +10,6 @@ public class Chaingun : BaseGun
     {
         base.Init();
 
-        bulletPrefab = g.assets.projectiles[tag]["Basic Bullet"];
         gunModelPrefab = g.assets.gunModels[tag]["Chaingun"];
 
         bulletMask = g.layerMasks[tag + " Projectile"];
@@ -31,11 +30,24 @@ public class Chaingun : BaseGun
         }
     }
 
+    public override void FixStats()
+    {
+        base.FixStats();
+
+        autofire = true;
+        firerate *= 5f;
+        damage /= 3f;
+        projectileSize /= 1.25f;
+        projectileSpeed *= 1.25f;
+    }
+
     public override void OnShoot()
     {
+        base.OnShoot();
+
         foreach (GameObject model in gunModels)
         {
-            model.transform.GetChild(1).Rotate(Vector3.forward * 2);
+            model.transform.GetChild(1).Rotate(Vector3.forward * 100 * Time.fixedDeltaTime);
         }
 
         if (!canShoot) return;
@@ -52,18 +64,10 @@ public class Chaingun : BaseGun
             randomRot.x = Random.Range(-5, 5);
             randomRot.y = Random.Range(-5, 5);
 
-            SpawnBullet(shootPoint.position + randomPosOffset, shootPoint.rotation * Quaternion.Euler(randomRot.x, randomRot.y, randomRot.z));
+            SpawnBullet(shootPoint.position + randomPosOffset, shootPoint.rotation * Quaternion.Euler(randomRot.x, randomRot.y, randomRot.z) * Quaternion.Euler(0, 180, 0));
         }
         
 
         StartCoroutine("FirerateRefresh");
-    }
-
-    public override void FixStats()
-    {
-        autofire = true;
-        firerate *= 5f;
-        damage /= 6f;
-        projectileSize /= 1.35f;
     }
 }

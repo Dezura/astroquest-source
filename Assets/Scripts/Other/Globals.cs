@@ -9,7 +9,8 @@ public class Globals : MonoBehaviour
     public VirtualMouse virtualMouse;
     public PlayerCamera playerCamera;
 
-    public Transform projectileSpawns;
+    public Transform enemySpawn;
+    public Transform projectileSpawn;
 
     public SerializableDictionaryBase<string, LayerMask> layerMasks;
 

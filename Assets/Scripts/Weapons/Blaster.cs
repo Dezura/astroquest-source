@@ -12,7 +12,6 @@ public class Blaster : BaseGun
     {
         base.Init();
 
-        bulletPrefab = g.assets.projectiles[tag]["Basic Bullet"];
         gunModelPrefab = g.assets.gunModels[tag]["Blaster"];
 
         bulletMask = g.layerMasks[tag + " Projectile"];
@@ -33,27 +32,31 @@ public class Blaster : BaseGun
         }
     }
 
-    public override void OnShoot()
-    {
-        // TODO: Add a muzzle flash for more impact on each shot
-
-        if (!canShoot) return;
-
-        SpawnBullet(shootPoints[currentShootPoint].position, shootPoints[currentShootPoint].rotation);
-
-        currentShootPoint += 1;
-        if (currentShootPoint >= shootPoints.Count) currentShootPoint = 0;
-
-        StartCoroutine("FirerateRefresh");
-    }
-
     public override void FixStats()
     {
+        base.FixStats();
+
         firerate *= gunManager.gunPoints.Count;
 
         autofire = true;
         firerate *= 1.5f;
         damage *= 1.25f;
-        projectileSize += 0.2f;
+        projectileSize *= 1.25f;
+    }
+
+    public override void OnShoot()
+    {
+        base.OnShoot();
+
+        // TODO: Add a muzzle flash for more impact on each shot
+
+        if (!canShoot) return;
+
+        SpawnBullet(shootPoints[currentShootPoint].position, shootPoints[currentShootPoint].rotation * Quaternion.Euler(0, 180, 0));
+
+        currentShootPoint += 1;
+        if (currentShootPoint >= shootPoints.Count) currentShootPoint = 0;
+
+        StartCoroutine("FirerateRefresh");
     }
 }

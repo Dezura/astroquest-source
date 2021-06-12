@@ -15,6 +15,8 @@ public class Projectile : Utils
     public float sizeMultiplier;
     public float knockbackForce;
 
+    [HideInInspector] public Rigidbody rigidBody;
+    [HideInInspector] public MeshRenderer model;
     [HideInInspector] public Vector3 lastPos;
 
     // Since this script inherits from Utils, I need to override Awake() as it calls GetGlobals(), which doesn't work well with prefabs on Awake()
@@ -37,15 +39,20 @@ public class Projectile : Utils
     public virtual void Init() 
     {
         GetGlobals();
+
+        FixStats();
         
-        destroyExplosion = GetComponentInChildren<ParticleSystem>();
+        rigidBody = GetComponent<Rigidbody>();
+        model = GetComponentInChildren<MeshRenderer>();
 
         transform.localScale *= sizeMultiplier;
         
-        transform.position -= transform.position - spawnPoint.position;
+        transform.position += transform.position - spawnPoint.position;
 
         StartCoroutine("LifespanTimeout");
     }
+
+    public virtual void FixStats() {}
 
     public virtual void UpdateProjectile() 
     {
@@ -75,5 +82,40 @@ public class Projectile : Utils
     public virtual void WhileDestroying()
     {
         if (!destroyExplosion.isPlaying) Destroy(gameObject);
+    }
+
+
+
+    // Extra helper/other type functions
+
+    public Transform GetClosestTarget()
+    {
+        switch (tag)
+        {
+            case "Player Projectile":
+                EnemyAI closestEnemy = GetClosestEnemy();
+
+                if (closestEnemy) return closestEnemy.transform; 
+
+                break;
+            case "Enemy Projectile":
+                return g.playerShip.transform;
+        }
+
+        return null;
+    }
+
+    public EnemyAI GetClosestEnemy(Transform exludeTransform = null)
+    {
+        EnemyAI closestEnemy = null;
+        foreach (EnemyAI enemy in g.enemySpawn.GetComponentsInChildren<EnemyAI>())
+        {
+            if (exludeTransform == enemy.transform) continue;
+            if (!closestEnemy) {closestEnemy = enemy; continue;}
+
+            if (Vector3.Distance(transform.position, enemy.transform.position) < Vector3.Distance(transform.position, closestEnemy.transform.position)) closestEnemy = enemy;
+        }
+
+        return closestEnemy;
     }
 }

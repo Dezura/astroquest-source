@@ -2,19 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasicBullet : Projectile
+public class HomingMissile : Projectile
 {
+    float turnSpeed = 2f;
+
     public override void FixStats()
     {
         base.FixStats();
 
-        damage *= 2f;
+        transform.localScale *= 1.25f;
+        speed /= 1.3f;
+        damage /= 1.75f;
     }
 
     public override void FixedUpdateProjectile()
     {
         base.FixedUpdateProjectile();
-        
+
+        Transform target = GetClosestTarget();
+
+        if (target) transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, target.position - transform.position, turnSpeed * Time.fixedDeltaTime, 0));
+
         rigidBody.velocity = transform.forward * speed;
     }
 

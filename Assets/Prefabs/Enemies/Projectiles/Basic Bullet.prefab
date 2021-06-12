@@ -56,6 +56,7 @@ MonoBehaviour:
   lifespan: 0
   sizeMultiplier: 0
   knockbackForce: 0
+  rigidBody: {fileID: 0}
   lastPos: {x: 0, y: 0, z: 0}
 --- !u!54 &837018278965622185
 Rigidbody:
@@ -100,13 +101,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1508516360010817405}
-  m_LocalRotation: {x: -0.000000053385076, y: 0.7071068, z: 0.70710677, w: 0.00000005338508}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0.7071068, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: -27.000301, y: -288.0012, z: -15}
   m_Children: []
   m_Father: {fileID: 837018278965622187}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 180, z: 0}
 --- !u!114 &2134690262910867534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,7 +227,7 @@ GameObject:
   - component: {fileID: 2098580718790882724}
   - component: {fileID: 7165547475098309526}
   m_Layer: 9
-  m_Name: Particle System
+  m_Name: Destroy Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

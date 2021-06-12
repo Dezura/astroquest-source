@@ -10,6 +10,8 @@ public class Liberator : EnemyAI
 
         playerAvoidanceDistance = 45f;
         enemyAvoidanceDistance = 45f;
+        
+        gunManager.currentGun.projectileSpeed *= 1.75f;
     }
 
     public override void UpdateAI()

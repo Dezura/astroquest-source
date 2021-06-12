@@ -32,9 +32,6 @@ public class ShipMain : BaseAI
 
         gunManager.SetCurrentGun(startingGun, startingProjectile);
         gunManager.AimGunPoints(shipLook.aimPoint.position, modelTransform.up, true);
-
-        gunManager.currentGun.damage *= 1.5f;
-        gunManager.currentGun.projectileSize *= 1.25f;
     }
 
     void Start() {} // Override BaseAI Start()
