@@ -7,7 +7,7 @@ public class VirtualMouse : Utils
 {
     public List<RectTransform> virtualMouseTransform; // Making these arrays to store both of the cursor states, as it moves a seperate cursor on right click
     public float mouseSensitivity = 100f;
-    public Vector2 virtualPositionClamp;
+    public List<Vector2> virtualPositionClamp;
 
     [HideInInspector] public bool isAiming = false;
 
@@ -24,6 +24,8 @@ public class VirtualMouse : Utils
 
     void Awake() 
     {
+        GetGlobals();
+
         vMousePosition.Add(Vector2.zero);
         vMousePosition.Add(Vector2.zero);
         vMouseOffset.Add(Vector2.zero);
@@ -32,6 +34,8 @@ public class VirtualMouse : Utils
 
     void Update()
     {
+        if (g.gameMenu.gameIsPaused) return;
+
         mouse = Mouse.current;
         
         isAiming = mouse.rightButton.isPressed;
@@ -42,9 +46,9 @@ public class VirtualMouse : Utils
         UpdateMouseValues();
 
         vMousePosition[0] = virtualMouseTransform[0].position;
-        vMouseOffset[0] = new Vector2((vMousePosition[0].x - Screen.width/2) / virtualPositionClamp.x, (vMousePosition[0].y - Screen.height/2) / virtualPositionClamp.y);
+        vMouseOffset[0] = new Vector2((vMousePosition[0].x - Screen.width/2) / (Screen.width/2 * virtualPositionClamp[0].x), (vMousePosition[0].y - Screen.height/2) / (Screen.height/2 * virtualPositionClamp[0].y));
         vMousePosition[1] = virtualMouseTransform[1].position;
-        vMouseOffset[1] = new Vector2((vMousePosition[1].x - Screen.width/2) / virtualPositionClamp.x, (vMousePosition[1].y - Screen.height/2) / virtualPositionClamp.y);
+        vMouseOffset[1] = new Vector2((vMousePosition[1].x - Screen.width/2) / (Screen.width/2 * virtualPositionClamp[1].x), (vMousePosition[1].y - Screen.height/2) / (Screen.height/2 * virtualPositionClamp[1].y));
     }
 
     // This function is kinda a mess ngl
@@ -52,7 +56,7 @@ public class VirtualMouse : Utils
     {
         if (Application.isFocused) {
             Cursor.visible = false;
-            if (!PointWithinBoundExtents(mousePos, new Vector2(Screen.width/2f, Screen.height/2f), 350, 350)) {
+            if (!PointWithinBoundExtents(mousePos, new Vector2(Screen.width/2f, Screen.height/2f),  Screen.width/2f * 0.5f,  Screen.height/2f * 0.5f)) {
                 ResetCursorPosition();
             }
             virtualMouseTransform[0].position += (Vector3) mouseMoveDelta * (mouseSensitivity/100f);
@@ -72,7 +76,7 @@ public class VirtualMouse : Utils
     {
         if (Application.isFocused) {
             Cursor.visible = false;
-            if (!PointWithinBoundExtents(mousePos, new Vector2(Screen.width/2f, Screen.height/2f), 350, 350)) {
+            if (!PointWithinBoundExtents(mousePos, new Vector2(Screen.width/2f, Screen.height/2f),  Screen.width/2f * 0.5f,  Screen.height/2f * 0.5f)) {
                 ResetCursorPosition();
             }
             virtualMouseTransform[1].position += (Vector3) mouseMoveDelta * (mouseSensitivity/100f);
@@ -99,13 +103,13 @@ public class VirtualMouse : Utils
 
     public void ClampVirtualMousePositions()
     {
-        float clampedX1 = Mathf.Clamp(virtualMouseTransform[0].position.x, Screen.width/2f - virtualPositionClamp.x, Screen.width/2f + virtualPositionClamp.x);
-        float clampedY1 = Mathf.Clamp(virtualMouseTransform[0].position.y, Screen.height/2f - virtualPositionClamp.y, Screen.height/2f + virtualPositionClamp.y);
+        float clampedX1 = Mathf.Clamp(virtualMouseTransform[0].position.x, Screen.width/2f - Screen.width/2f * virtualPositionClamp[0].x, Screen.width/2f + Screen.width/2f * virtualPositionClamp[0].x);
+        float clampedY1 = Mathf.Clamp(virtualMouseTransform[0].position.y, Screen.height/2f - Screen.height/2f * virtualPositionClamp[0].y, Screen.height/2f + Screen.height/2f * virtualPositionClamp[0].y);
 
         virtualMouseTransform[0].position = new Vector2(clampedX1, clampedY1);
 
-        float clampedX2 = Mathf.Clamp(virtualMouseTransform[1].position.x, 0, Screen.width);
-        float clampedY2 = Mathf.Clamp(virtualMouseTransform[1].position.y, 0, Screen.height);
+        float clampedX2 = Mathf.Clamp(virtualMouseTransform[1].position.x, Screen.width/2f - Screen.width/2f * virtualPositionClamp[1].x, Screen.width/2f + Screen.width/2f * virtualPositionClamp[1].x);
+        float clampedY2 = Mathf.Clamp(virtualMouseTransform[1].position.y, Screen.height/2f - Screen.height/2f * virtualPositionClamp[1].y, Screen.height/2f + Screen.height/2f * virtualPositionClamp[1].y);
 
         virtualMouseTransform[1].position = new Vector2(clampedX2, clampedY2);
     }

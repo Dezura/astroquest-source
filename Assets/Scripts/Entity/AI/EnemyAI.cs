@@ -19,6 +19,8 @@ public class EnemyAI : BaseAI
     public GameObject thrusterRoot;
 
     public ParticleSystem destroyExplosion;
+    public AudioSource explosionSFX;
+    public AudioSource hitSFX;
 
     [HideInInspector] public float distanceFromTarget;
 
@@ -37,6 +39,8 @@ public class EnemyAI : BaseAI
         {"current", 0f}
     };
 
+    ParticleSystem[] thrusters;
+
     void Start() {Init();}
 
 
@@ -53,6 +57,8 @@ public class EnemyAI : BaseAI
 
         gunManager.SetCurrentGun(startingGun, startingProjectile);
         gunManager.AimGunPoints(g.playerShip.transform.position, transform.up, true);
+
+        thrusters = thrusterRoot.GetComponentsInChildren<ParticleSystem>();
     }
 
     public override void UpdateAI()
@@ -75,27 +81,38 @@ public class EnemyAI : BaseAI
         else currentDetection = "None";
     }
 
+    public override void AfterHit(GameObject hitSource, float damage, float forceApplied = 0, Vector3? hitPosition = null)
+    {
+        base.AfterHit(hitSource, damage, forceApplied, hitPosition);
+
+        hitSFX.volume = g.globalVolume;
+        hitSFX.Play();
+    }
+
     public override void OnDeath(GameObject hitSource)
     {
         base.OnDeath(hitSource);
 
         destroyExplosion.Play();
         destroyExplosion.GetComponent<Light>().enabled = true;
+        explosionSFX.volume = g.globalVolume;
+        explosionSFX.Play();
 
         foreach (MeshRenderer mesh in GetComponentsInChildren<MeshRenderer>()) Destroy(mesh);
+        Destroy(thrusterRoot);
         Destroy(GetComponentInChildren<MeshCollider>());
         Destroy(GetComponent<Rigidbody>());
 
-        g.playerCamera.ApplyScreenShake(15f);
+        g.playerCamera.ApplyScreenShake(25f);
 
-        // TODO: Give points to score on death
+        g.timerAndScore.AddScore(Random.Range(40, 50) * (1 + (int) g.timerAndScore.currentTime.TotalMinutes / 10f) * 10);
     }
 
     public override void WhileDead()
     {
         base.WhileDead();
 
-        if (!destroyExplosion.isPlaying) Destroy(gameObject);
+        if (!destroyExplosion.isPlaying && !explosionSFX.isPlaying) Destroy(gameObject);
     }
 
 
@@ -115,7 +132,7 @@ public class EnemyAI : BaseAI
 
     public void UpdateThrusters()
     {
-        foreach (ParticleSystem thruster in thrusterRoot.GetComponentsInChildren<ParticleSystem>())
+        foreach (ParticleSystem thruster in thrusters)
         {
             ParticleSystem.EmissionModule particleEmission = thruster.emission;
             ParticleSystem.MainModule particleMain = thruster.main;

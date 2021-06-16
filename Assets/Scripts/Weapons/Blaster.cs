@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MEC;
 
 public class Blaster : BaseGun
 {
@@ -57,6 +58,6 @@ public class Blaster : BaseGun
         currentShootPoint += 1;
         if (currentShootPoint >= shootPoints.Count) currentShootPoint = 0;
 
-        StartCoroutine("FirerateRefresh");
+        Timing.RunCoroutine(FirerateRefresh().CancelWith(gameObject));
     }
 }

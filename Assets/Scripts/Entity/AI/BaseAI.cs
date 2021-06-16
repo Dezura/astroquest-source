@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MEC;
 
 // This is a base class all entities inherit from
 
@@ -42,9 +43,9 @@ public class BaseAI : Utils
 
     // Extra helper/other type functions
 
-    private IEnumerator RevertFlashAfter(float seconds)
+    public IEnumerator<float> RevertFlashAfter(float seconds)
     {
-        yield return new WaitForSeconds(seconds);
+        yield return Timing.WaitForSeconds(seconds);
 
         foreach (MeshRenderer mesh in transform.GetComponentsInChildren<MeshRenderer>())
         {
@@ -57,8 +58,6 @@ public class BaseAI : Utils
 
     public void HitFlash()
     {
-        StopCoroutine("RevertFlashAfter");
-
         foreach (MeshRenderer mesh in transform.GetComponentsInChildren<MeshRenderer>())
         {
             foreach (Material material in mesh.materials)
@@ -70,6 +69,6 @@ public class BaseAI : Utils
             }
         }
 
-        StartCoroutine("RevertFlashAfter", 0.075f);
+        Timing.RunCoroutine(RevertFlashAfter(0.075f).CancelWith(gameObject), "RevertFlashAfter");
     }
 }

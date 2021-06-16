@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MEC;
 
 public class PlayerCamera : Utils
 {
@@ -30,26 +31,17 @@ public class PlayerCamera : Utils
         followZoom.m_Width = amount;
     }
 
-    public void ApplyScreenShake(float amount)
+    public void ApplyScreenShake(float amount, float durationSeconds = 0.35f)
     {
-        StopCoroutine("ReduceShakeCoroutine");
         cameraShake.m_AmplitudeGain += amount;
         cameraShake.m_FrequencyGain += amount;
-        StartCoroutine("ReduceShakeCoroutine");
+        Timing.RunCoroutine(StopScreenShakeIn(durationSeconds).CancelWith(gameObject));
     }
 
-    private IEnumerator ReduceShakeCoroutine()
+    public IEnumerator<float> StopScreenShakeIn(float seconds)
     {
-        yield return new WaitUntil(ReducedShake); 
-    }
-
-    bool ReducedShake() // This design is very weird, but the WaitUntil in the ReduceShakeCoroutine() demands this type of design
-    {
-        cameraShake.m_AmplitudeGain = Mathf.Lerp(cameraShake.m_AmplitudeGain, 0, 0.025f);
-        cameraShake.m_FrequencyGain = Mathf.Lerp(cameraShake.m_FrequencyGain, 0, 0.025f);
-
-        if (cameraShake.m_AmplitudeGain == 0 && cameraShake.m_FrequencyGain == 0) return true;
-
-        return false;
+        yield return Timing.WaitForSeconds(seconds); 
+        cameraShake.m_AmplitudeGain = 0;
+        cameraShake.m_FrequencyGain = 0;
     }
 }

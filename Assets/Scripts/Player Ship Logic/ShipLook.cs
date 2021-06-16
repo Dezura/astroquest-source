@@ -26,6 +26,9 @@ public class ShipLook : Utils
 
     public float aimZoom = 30f;
 
+    public float cameraShoulderOffsetAmount = 3.5f;
+    public float cameraShoulderLerpAmount = 0.2f;
+
     [HideInInspector] public Dictionary<string, Vector3> modelTorques = new Dictionary<string, Vector3>();
 
     Vector3 camPoint1StartPos;
@@ -69,6 +72,8 @@ public class ShipLook : Utils
 
     public void UpdateCameraPoints()
     {
+        cameraPoints[0].localPosition = new Vector3(Mathf.Lerp(cameraPoints[0].localPosition.x, -cameraShoulderOffsetAmount * main.shipMovement.inputVector.x, cameraShoulderLerpAmount), Mathf.Lerp(cameraPoints[0].localPosition.y, 2 + -cameraShoulderOffsetAmount/2f * main.shipMovement.inputVector.y, cameraShoulderLerpAmount), cameraPoints[0].localPosition.z);
+
         // Point 1
         cameraPoints[1].localPosition = camPoint1StartPos + new Vector3(vm.vMouseOffset[1].x * cameraAdaptiveLookAmount.x, vm.vMouseOffset[1].y * cameraAdaptiveLookAmount.y, 0);
 

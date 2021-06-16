@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MEC;
 
 public class Chaingun : BaseGun
 {
@@ -68,6 +69,6 @@ public class Chaingun : BaseGun
         }
         
 
-        StartCoroutine("FirerateRefresh");
+        Timing.RunCoroutine(FirerateRefresh().CancelWith(gameObject));
     }
 }

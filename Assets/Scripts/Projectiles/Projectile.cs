@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MEC;
 
 public class Projectile : Utils
 {
+    public AudioSource soundEffect;
+
     public bool pendingDestroy = false;
 
     public ParticleSystem destroyExplosion;
@@ -30,7 +33,7 @@ public class Projectile : Utils
 
     private void OnTriggerEnter(Collider collider) {OnHitCollision(collider);}
 
-    private IEnumerator LifespanTimeout() {yield return new WaitForSeconds(lifespan); OnLifespanTimeout();}
+    public IEnumerator<float> LifespanTimeout() {yield return Timing.WaitForSeconds(lifespan); OnLifespanTimeout();}
 
 
 
@@ -49,7 +52,10 @@ public class Projectile : Utils
         
         transform.position += transform.position - spawnPoint.position;
 
-        StartCoroutine("LifespanTimeout");
+        Timing.RunCoroutine(LifespanTimeout().CancelWith(gameObject));
+
+        soundEffect.volume = g.globalVolume;
+        soundEffect.Play();
     }
 
     public virtual void FixStats() {}

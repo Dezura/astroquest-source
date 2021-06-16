@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MEC;
 
 public class BaseGun : Utils
 {
@@ -20,9 +21,9 @@ public class BaseGun : Utils
     public float accuracy = 0.1f;
 
     [Header("Bullet Stats (Some stats may not be applicable to every bullet type)")]
-    public float damage = 100f;
+    public float damage = 75f;
     public float projectileSize = 1.3f;
-    public float projectileSpeed = 80f;
+    public float projectileSpeed = 160f;
     public float projectileLifespan = 1f;
     public float projectileKnockback = 1f;
 
@@ -51,16 +52,15 @@ public class BaseGun : Utils
 
     // Extra helper/other type functions
 
-    private IEnumerator FirerateRefresh()
+    public IEnumerator<float> FirerateRefresh()
     {
         canShoot = false;
-        yield return new WaitForSeconds(10f/firerate);
+        yield return Timing.WaitForSeconds(10f/firerate);
         canShoot = true;
     }
 
     public void SpawnBullet(Vector3 position, Quaternion rotation)
     {
-        // TODO: Rework bullets with a base system
         var projectile = Instantiate(bulletPrefab, position, rotation).GetComponent<Projectile>();
 
         projectile.transform.SetParent(g.projectileSpawn);

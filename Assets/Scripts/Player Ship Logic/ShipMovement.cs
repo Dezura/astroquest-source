@@ -34,10 +34,12 @@ public class ShipMovement : Utils
         {"current", 0f}
     };
 
+    ParticleSystem[] thrusters;
+
     // Yes, I'm using a 4D vector lol
     // The W axis here will be used to store the roll rotation values
     // Is it unnecessary? Yeah for the most part, but atleast now I can say "Oh I've written code with 4D vectors!" or something
-    Vector4 inputVector = Vector4.zero;
+    public Vector4 inputVector = Vector4.zero;
 
     public float cameraBoostZoom = 60f;
     public float speedBoostAmount = 1.5f;
@@ -51,6 +53,8 @@ public class ShipMovement : Utils
         main = transform.GetComponentInParent<ShipMain>();
 
         main.shipLook.modelTorques.Add("Movement", Vector3.zero);
+
+        thrusters = thrusterRoot.GetComponentsInChildren<ParticleSystem>();
     }
 
     // This function is called everytime a movement related input is called
@@ -99,7 +103,7 @@ public class ShipMovement : Utils
 
     public void HandleMovement()
     {
-        isBoosting = (boostInput && !g.virtualMouse.isAiming && (inputVector.z == 1 && inputVector.x == 0 && inputVector.y == 0));
+        isBoosting = (boostInput && (inputVector.z == 1 && inputVector.x == 0 && inputVector.y == 0));
 
         // Applies basic movement force for x and y, that force then rotated by it's own rotation
         main.entity.rigidBody.AddForce(transform.rotation * (new Vector3(clampedMoveDir.x, clampedMoveDir.y, 0) * moveSpeed * 12f));
@@ -135,7 +139,7 @@ public class ShipMovement : Utils
         if (thrusterMaxMulti <= 0.4f) thrusterMaxMulti = 0;
 
         thrustersSpeed["current"] = Mathf.Lerp(thrustersSpeed["current"], thrustersSpeed["max"] * thrusterMaxMulti, thrustersSpeed["lerpSpeed"]);
-        foreach (ParticleSystem thruster in thrusterRoot.GetComponentsInChildren<ParticleSystem>())
+        foreach (ParticleSystem thruster in thrusters)
         {
             // I have to store these objects first before I can set variables on them, not sure why
             ParticleSystem.EmissionModule particleEmission = thruster.emission;

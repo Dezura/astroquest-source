@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MEC;
 
 public class Lancer : EnemyAI
 {
@@ -15,7 +16,7 @@ public class Lancer : EnemyAI
 
         enemyAvoidanceDistance = 45f;
 
-        StartCoroutine("RandomizeFollowOffset");
+        Timing.RunCoroutine(RandomizeFollowOffset().CancelWith(gameObject));
     }
 
     public override void UpdateAI()
@@ -37,13 +38,13 @@ public class Lancer : EnemyAI
         if (currentDetection != "None") AvoidNearbyContactFrom("Enemy");
     }
 
-    private IEnumerator RandomizeFollowOffset()
+    public IEnumerator<float> RandomizeFollowOffset()
     {
-        yield return new WaitForSeconds(randomizedFollowOffsetChangeRate);
+        yield return Timing.WaitForSeconds(randomizedFollowOffsetChangeRate);
         randomizedFollowOffset.x = Random.Range(-randomizedFollowOffsetRange/2f, randomizedFollowOffsetRange/2f);
         randomizedFollowOffset.y = Random.Range(-randomizedFollowOffsetRange/2f, randomizedFollowOffsetRange/2f);
         randomizedFollowOffset.z = Random.Range(-randomizedFollowOffsetRange/2f, randomizedFollowOffsetRange/2f);
 
-        StartCoroutine("RandomizeFollowOffset");
+        Timing.RunCoroutine(RandomizeFollowOffset().CancelWith(gameObject));
     }
 }
