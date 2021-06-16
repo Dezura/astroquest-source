@@ -97,7 +97,7 @@ public class ShipMain : BaseAI
 
         if (!destroyExplosion.isPlaying) {
             destroyExplosion.GetComponent<Light>().enabled = false;
-            if (!explosionSFX.isPlaying) g.gameMenu.OnPlayerDeath();
+            if (!explosionSFX.isPlaying && !g.gameMenu.deathMenuUI.activeSelf) g.gameMenu.OnPlayerDeath();
         }
     }
 

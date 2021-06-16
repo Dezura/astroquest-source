@@ -16,9 +16,18 @@ public class GameMenu : Utils
     public AudioSource music;
     public AudioSource menuBlip;
 
+    public Slider musicSlider;
+    public Slider sfxSlider;
+
     public void Start()
     {
         Time.timeScale = 1f;
+
+        musicSlider.value = PlayerPrefs.GetFloat("musicVol", 0.7f);
+        sfxSlider.value = PlayerPrefs.GetFloat("sfxVol", 0.7f);
+        
+        g.globalVolume = sfxSlider.value;
+        menuBlip.volume = g.globalVolume/2f;
     }
     
     public void OnEscapePress(InputAction.CallbackContext inputContext)
@@ -33,7 +42,14 @@ public class GameMenu : Utils
         Time.timeScale = 0f;
         gameIsPaused = true;
 
-        deathMenuUI.transform.Find("Subtitle").GetComponent<TMPro.TextMeshProUGUI>().text = "You made it to " + g. timerAndScore.timerText.text + "\nand got a score of " + g.timerAndScore.currentScore + "!";
+        if (g.timerAndScore.currentScore > PlayerPrefs.GetFloat("highscore")) {
+            deathMenuUI.transform.Find("Subtitle").GetComponent<TMPro.TextMeshProUGUI>().text = "Score: " + g.timerAndScore.currentScore + "\nNew highscore!";
+            PlayerPrefs.SetFloat("highscore", g.timerAndScore.currentScore);
+            PlayerPrefs.Save();
+        }
+        else {
+            deathMenuUI.transform.Find("Subtitle").GetComponent<TMPro.TextMeshProUGUI>().text = "Score: " + g.timerAndScore.currentScore + "\nHighscore: " + PlayerPrefs.GetFloat("highscore");
+        }
     }
 
     public void TogglePause()
@@ -60,11 +76,14 @@ public class GameMenu : Utils
     public void ChangeMusicVolume(Slider slider)
     {
         music.volume = slider.value;
+
+        PlayerPrefs.SetFloat("musicVol", slider.value);
     }
 
     public void ChangeSoundEffectsVolume(Slider slider)
     {
         g.globalVolume = slider.value;
+        PlayerPrefs.SetFloat("sfxVol", slider.value);
 
         menuBlip.volume = g.globalVolume/2f;
     }
