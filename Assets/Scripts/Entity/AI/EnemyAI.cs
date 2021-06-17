@@ -57,6 +57,7 @@ public class EnemyAI : BaseAI
 
         gunManager.SetCurrentGun(startingGun, startingProjectile);
         gunManager.AimGunPoints(g.playerShip.transform.position, transform.up, true);
+        gunManager.currentGun.projectileSpeed = Mathf.Min(180, 80 + (20 * ((float) g.timerAndScore.currentTime.TotalMinutes)));
 
         thrusters = thrusterRoot.GetComponentsInChildren<ParticleSystem>();
     }

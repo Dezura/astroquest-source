@@ -23,7 +23,7 @@ public class BaseGun : Utils
     [Header("Bullet Stats (Some stats may not be applicable to every bullet type)")]
     public float damage = 75f;
     public float projectileSize = 1.3f;
-    public float projectileSpeed = 160f;
+    public float projectileSpeed = 100f;
     public float projectileLifespan = 1f;
     public float projectileKnockback = 1f;
 

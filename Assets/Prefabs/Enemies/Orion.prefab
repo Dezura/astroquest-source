@@ -57,7 +57,7 @@ MonoBehaviour:
   gunManager: {fileID: 9092048389767706778}
   startingGun: Blaster
   startingProjectile: Basic Bullet
-  speed: 400
+  speed: 650
   contactDamage: 200
   detectionArea: {fileID: 2922412913825365689}
   closeDetectionArea: {fileID: 3394775102189200334}
@@ -118,7 +118,7 @@ MonoBehaviour:
     - regenAmount
     - regenCooldown
     _values:
-    - 3000
+    - 2500
     - 0
     - 0
     - 0

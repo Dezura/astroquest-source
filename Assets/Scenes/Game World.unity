@@ -102587,8 +102587,8 @@ MonoBehaviour:
     _values:
     - 15000
     - 0
-    - 400
-    - 4
+    - 750
+    - 3
   ivFrameDuration: 0.5
   blockedDamageSources: []
   canRegen: 1

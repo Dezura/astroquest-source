@@ -11,7 +11,7 @@ public class Orion : EnemyAI
         playerAvoidanceDistance = 20f;
         enemyAvoidanceDistance = 20f;
 
-        mouseAvoidanceDistance = 15000f;
+        mouseAvoidanceDistance = 17500f;
     }
 
     public override void UpdateAI()

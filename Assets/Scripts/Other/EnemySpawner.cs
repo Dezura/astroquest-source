@@ -22,7 +22,7 @@ public class EnemySpawner : MonoBehaviour
 
     void Update() 
     {
-        maxEnemyCount = 2 + (int) timerAndScore.currentTime.TotalMinutes;
+        maxEnemyCount = 1 + (int) timerAndScore.currentTime.TotalMinutes;
         spawnTime = Mathf.Max(1, 15 - ((float) timerAndScore.currentTime.TotalMinutes) * 3);
 
         if (!currentlySpawning && transform.childCount < maxEnemyCount && (float) timerAndScore.currentTime.Seconds >= gracePeriodTime) {

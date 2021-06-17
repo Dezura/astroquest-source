@@ -37,6 +37,7 @@ public class ShipMain : BaseAI
 
         gunManager.SetCurrentGun(startingGun, startingProjectile);
         gunManager.AimGunPoints(shipLook.aimPoint.position, modelTransform.up, true);
+        gunManager.currentGun.projectileSpeed = 200f;
     }
 
     void Start() {} // Override BaseAI Start()
