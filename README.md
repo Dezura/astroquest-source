@@ -1,4 +1,7 @@
-**Sorry in advanced for all the spaghetti code you might stumble across around the latest commits, had to rush a lot of features, and cut many others out.**
+**Project Video Showcase: ** 
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=kKjzSfcu0jo
+" target="_blank"><img src="http://img.youtube.com/vi/kKjzSfcu0jo/0.jpg" 
+alt="Astroquest Trailer" width="240" height="180" border="10" /></a>
 
 # Astroquest Source Code
 Source code for my ICS culminating project Astroquest.
