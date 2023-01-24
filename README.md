@@ -1,7 +1,6 @@
-**Project Video Showcase: ** 
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=kKjzSfcu0jo
-" target="_blank"><img src="http://img.youtube.com/vi/kKjzSfcu0jo/0.jpg" 
-alt="Astroquest Trailer" width="240" height="180" border="10" /></a>
+**Project Video Showcase:** https://youtu.be/kKjzSfcu0jo 
+
+![](https://img.itch.zone/aW1hZ2UvMTA5MTY2OS82MzUyMDI2LmdpZg==/347x500/gBbZZW.gif)
 
 # Astroquest Source Code
 Source code for my ICS culminating project Astroquest.
