@@ -1,9 +1,9 @@
-**Project Video Showcase:** https://youtu.be/kKjzSfcu0jo 
-
-![](https://img.itch.zone/aW1hZ2UvMTA5MTY2OS82MzUyMDI2LmdpZg==/347x500/gBbZZW.gif)
-
 # Astroquest Source Code
 Source code for my ICS culminating project Astroquest.
+
+![](https://img.itch.zone/aW1hZ2UvMTA5MTY2OS82MzUyMDI2LmdpZg==/347x500/gBbZZW.gif)
+**Project Video Showcase:** https://youtu.be/kKjzSfcu0jo 
+
 
 All assets (Other than a few plugins and shaders) are created from scratch and by myself.
 
